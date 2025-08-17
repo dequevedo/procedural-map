@@ -6,37 +6,100 @@
 <title>Medieval Procedural Map (Single HTML)</title>
 <style>
   :root{
-    --bg:#0f1115; --panel:#1a1f2b; --accent:#e94f37; --muted:#9aa4b2; --ink:#e5e7eb;
-    --ok:#2ecc71; --warn:#f39c12; --danger:#e74c3c; --shadow:rgba(0,0,0,.35);
+    /* Updated medieval theme colours: earth tones and desaturated accents */
+    --bg:#2f2a23; --panel:#3d3328; --accent:#b89a6b; --muted:#a1886e; --ink:#e5dccc;
+    --ok:#5f8a6b; --warn:#b27e3c; --danger:#8c4c3b; --shadow:rgba(0,0,0,.35);
   }
   html,body{height:100%;}
-  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:hidden;}
-  #ui{position:fixed;left:12px;top:12px;background:var(--panel);border:1px solid #2a3142;border-radius:12px;box-shadow:0 10px 30px var(--shadow);padding:12px 12px 8px;width:310px;z-index:10}
-  #ui h3{margin:0 0 6px 0;font-size:14px;color:#e2e8f0;letter-spacing:.3px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'Palatino Linotype', 'Book Antiqua', Palatino, 'Georgia', serif;overflow:hidden;}
+  #ui{
+    position:fixed;left:12px;top:12px;
+    background:var(--panel);
+    border:1px solid #574935;
+    border-radius:12px;
+    box-shadow:0 10px 30px var(--shadow);
+    padding:12px 12px 8px;
+    width:310px;
+    z-index:10;
+  }
+  #ui h3{margin:0 0 6px 0;font-size:14px;color:#f3ead3;letter-spacing:.3px;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;}
   .row{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center;margin:6px 0}
-  .row label{color:#cbd5e1}
-  .row input[type="text"], .row input[type="number"], .row select{width:100%;padding:6px 8px;background:#121621;border:1px solid #2a3142;border-radius:8px;color:#e2e8f0}
-  .row input[type="range"]{width:100%}
+  .row label{color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;}
+  .row input[type="text"], .row input[type="number"], .row select{
+    width:100%;padding:6px 8px;background:#2c261f;border:1px solid #4a3e32;border-radius:8px;color:#e5dccc;
+    font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;
+  }
+  .row input[type="range"]{
+    /* allow flexbox to control the width of range sliders when used alongside value displays */
+    min-width:0;
+  }
   .btns{display:flex;gap:8px;margin-top:8px}
-  .btn{flex:1;background:#243044;border:1px solid #324057;border-radius:10px;color:#eaeef4;padding:8px 10px;cursor:pointer}
+  .btn{
+    flex:1;
+    background:#5a4c3b;
+    border:1px solid #7b654e;
+    border-radius:10px;
+    color:#f0e6d2;
+    padding:8px 10px;
+    cursor:pointer;
+    font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;
+  }
   .btn:hover{filter:brightness(1.1)}
-  .btn.primary{background:linear-gradient(180deg,#3a76ff,#2b5edb);border:none}
-  .btn.export{background:linear-gradient(180deg,#24b37a,#179e66);border:none}
-  #legend{position:fixed;left:12px;bottom:12px;background:var(--panel);border:1px solid #2a3142;border-radius:12px;box-shadow:0 10px 30px var(--shadow);padding:10px 12px;min-width:220px;z-index:6;max-height:45vh;overflow:auto}
+  .btn.primary{
+    background:linear-gradient(180deg,#806542,#6a5237);
+    border:none;
+  }
+  .btn.export{
+    background:linear-gradient(180deg,#5f7e4f,#4e683f);
+    border:none;
+  }
+  #legend{
+    position:fixed;left:12px;bottom:12px;
+    background:var(--panel);
+    border:1px solid #574935;
+    border-radius:12px;
+    box-shadow:0 10px 30px var(--shadow);
+    padding:10px 12px;
+    min-width:220px;
+    z-index:6;
+    max-height:45vh;
+    overflow:auto;
+  }
   #legend h4{margin:0 0 6px 0;font-size:13px;color:#e2e8f0}
   #legend .item{display:flex;align-items:center;gap:8px;margin:6px 0}
   #legend .sw{width:14px;height:14px;border-radius:3px;border:1px solid #0006}
   #tooltip{position:fixed;pointer-events:none;background:#111827aa;color:#e5e7eb;padding:8px 10px;border-radius:8px;border:1px solid #ffffff18;backdrop-filter: blur(6px);z-index:9;transform:translate(-50%,-110%);white-space:nowrap}
   #tooltip.hidden{display:none}
-  #panel{position:fixed;right:12px;top:12px;width:360px;max-width:40vw;background:var(--panel);border:1px solid #2a3142;border-radius:14px;box-shadow:0 10px 30px var(--shadow);z-index:11;display:none;flex-direction:column;max-height:85vh}
+  #panel{
+    position:fixed;right:12px;top:12px;width:360px;max-width:40vw;
+    background:var(--panel);
+    border:1px solid #574935;
+    border-radius:14px;
+    box-shadow:0 10px 30px var(--shadow);
+    z-index:11;
+    display:none;
+    flex-direction:column;
+    max-height:85vh;
+  }
   #panel header{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #2a3142}
   #panel header h3{margin:0;font-size:16px}
   #panel .content{padding:12px;overflow:auto}
   .kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
   .badge{padding:2px 6px;border-radius:6px;background:#2b3447;color:#e5e7eb;border:1px solid #3a4661;font-size:12px}
   .citymap{width:100%;height:200px;background:#0b0e14;border:1px solid #2a3142;border-radius:10px}
-  canvas{display:block;position:fixed;inset:0}
-  .notice{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#111827f0;color:#e5e7eb;border:1px solid #ffffff22;padding:6px 10px;border-radius:10px;z-index:4}
+  /* Only the main map canvas should occupy the full viewport. Other canvas elements (e.g., city preview) should not inherit this. */
+  canvas#map{display:block;position:fixed;inset:0}
+  .notice{
+    position:fixed;left:50%;bottom:20px;
+    transform:translateX(-50%);
+    background:rgba(47,42,35,0.9);
+    color:#e5dccc;
+    border:1px solid #574935;
+    padding:6px 10px;
+    border-radius:10px;
+    z-index:4;
+    font-family:'Georgia','Times New Roman',serif;
+  }
   /* Banners behind labels */
   .label-banner{position:absolute}
 </style>
@@ -47,15 +110,48 @@
     <div class="row"><label>Seed</label><input id="seed" type="text" placeholder="my-seed" /></div>
     <div class="row"><label>Cities</label><input id="cities" type="number" min="10" max="300" value="120" /></div>
     <div class="row"><label>Rivers</label><input id="rivers" type="number" min="0" max="50" value="12" /></div>
-    <div class="row"><label>Water %</label><input id="water" type="range" min="20" max="75" value="45" /></div>
-    <div class="row"><label>Chaos</label><input id="chaos" type="range" min="0" max="100" value="45" /></div>
+    <div class="row"><label>Water %</label>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input id="water" type="range" min="20" max="75" value="45" style="flex:1" />
+        <span id="waterVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45%</span>
+      </div>
+    </div>
+    <div class="row"><label>Chaos</label>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input id="chaos" type="range" min="0" max="100" value="45" style="flex:1" />
+        <span id="chaosVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45</span>
+      </div>
+    </div>
     <div class="row"><label>Detail</label>
       <select id="detail">
         <option value="low">Low (fast)</option>
         <option value="med" selected>Medium</option>
         <option value="high">High</option>
+        <option value="ultra">Ultra</option>
       </select>
     </div>
+
+    <!-- Additional settings grouped into categories for better organization -->
+    <h4 style="margin:10px 0 4px;color:#e2e8f0">🛠️&nbsp;Terreno</h4>
+    <div class="row"><label>Montanhas</label>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input id="mountains" type="range" min="0" max="100" value="30" style="flex:1" />
+        <span id="mountainsVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">30</span>
+      </div>
+    </div>
+    <div class="row"><label>Facções</label><input id="factions" type="number" min="3" max="10" value="5" /></div>
+
+    <h4 style="margin:10px 0 4px;color:#e2e8f0">🎨&nbsp;Cores</h4>
+    <div class="row"><label>Oceano</label><input id="colorOcean" type="color" value="#3d7ed0" /></div>
+    <div class="row"><label>Terra</label><input id="colorLand" type="color" value="#8fb065" /></div>
+    <div class="row"><label>Colinas</label><input id="colorHills" type="color" value="#6f6549" /></div>
+    <div class="row"><label>Montanhas</label><input id="colorMountains" type="color" value="#8a8a8a" /></div>
+    <div class="row"><label>Rios</label><input id="colorRiver" type="color" value="#4fb7ff" /></div>
+    <div class="row"><label>Estradas</label><input id="colorRoad" type="color" value="#caa66a" /></div>
+
+    <h4 style="margin:10px 0 4px;color:#e2e8f0">🎨&nbsp;Paleta do Mapa</h4>
+    <div id="colorList" style="display:flex;flex-direction:column;gap:6px;"></div>
+    <button id="addColor" class="btn" style="margin-top:4px;">+ Adicionar Cor</button>
     <div class="btns">
       <button id="gen" class="btn primary">Generate</button>
       <button id="export" class="btn export">Export PNG</button>
@@ -65,6 +161,9 @@
   <div id="panel">
     <header><h3 id="panelTitle">City</h3><button id="panelClose" class="btn" style="flex:0 0 auto;padding:4px 8px">Close</button></header>
     <div class="content">
+      <!-- Minimap placed at the top of the city panel -->
+      <canvas id="cityMini" class="citymap" style="margin-bottom:10px;"></canvas>
+      <!-- Basic info about the settlement -->
       <div class="kv">
         <div><div class="badge" id="panelType">Type</div></div>
         <div><div class="badge" id="panelFaction">Faction</div></div>
@@ -73,14 +172,21 @@
         <div>Population</div><div id="panelPop">—</div>
         <div>Prosperity</div><div id="panelPros">—</div>
       </div>
-      <h4>🗺️ City Minimap</h4>
-      <canvas id="cityMini" class="citymap"></canvas>
-      <p id="panelDesc" style="color:#cbd5e1"></p>
+      <p id="panelDesc" style="color:#d6c4a5"></p>
     </div>
   </div>
   <div id="tooltip" class="hidden"></div>
   <canvas id="map"></canvas>
   <div class="notice" id="hint">Drag to pan • Wheel to zoom (focuses cursor) • Hover for tooltip • Click to open city</div>
+
+  <!-- City preview overlay: shows a minimap and information when a city is clicked. Placed in the top right corner. -->
+  <div id="cityPreview" style="display:none; position:fixed; top:12px; right:12px; width:320px; max-width:40vw; background:var(--panel); border:1px solid #574935; border-radius:14px; box-shadow:0 10px 30px var(--shadow); z-index:12; color:var(--ink); overflow:hidden;">
+    <div style="position:relative;">
+      <canvas id="previewMini" class="citymap" style="width:100%; height:200px; background:#0b0e14; border-bottom:1px solid #574935;"></canvas>
+      <button id="previewClose" class="btn" style="position:absolute; top:4px; right:4px; padding:2px 6px; font-size:12px; line-height:1;">×</button>
+    </div>
+    <div id="previewInfo" style="padding:10px; line-height:1.4; font-size:14px;"></div>
+  </div>
 <script>
 // ===============================
 // Medieval Procedural Map — Single File
@@ -157,14 +263,16 @@
     ctx.closePath();
   }
 
-  // ---------- Palettes (step colors, no smooth gradients)
-  const OceanSteps = ["#0b265a","#0f3275","#154091","#1d53aa","#2b67bf","#3d7ed0","#5396de","#6dafea"];
+  // ---------- Palettes (step colours, no smooth gradients)
+  // Colour palettes. These are declared with let so they can be overridden when the user selects custom colours.
+  // We define both a traditional stepped palette for water (OceanSteps) and a single variable MapColors for all land elevations.
+  let OceanSteps = ["#0b265a","#0f3275","#154091","#1d53aa","#2b67bf","#3d7ed0","#5396de","#6dafea"];
   const Beach = "#e9d8a6";
-  const LandSteps = ["#dfe8b8","#c9d29c","#b0c27b","#8fb065","#6b9b59","#4e8a4f","#3e6f45","#355a3d","#2e4b36"]; // plains -> forest
-  const HillSteps = ["#847a5a","#6f6549","#5c513d"]; // hills
-  const MountainSteps = ["#6b6b6b","#8a8a8a","#b2b2b2","#e4e4e4"]; // rocky -> snow caps
-  const RiverColor = "#4fb7ff";
-  const RoadColor = "#caa66a";
+  // MapColors is an array of colours used for all terrain elevations above the beach. The number of entries can vary depending on the user's palette.
+  let MapColors = ["#dfe8b8","#c9d29c","#b0c27b","#8fb065","#6b9b59","#4e8a4f","#3e6f45","#355a3d","#2e4b36"];
+  // Separate colours for linear features
+  let RiverColor = "#4fb7ff";
+  let RoadColor = "#caa66a";
   const RoadEdge = "#6e5430";
   const BridgeColor = "#d7d7d7";
 
@@ -183,6 +291,12 @@
   const cityMini = document.getElementById('cityMini');
   const legendItems = document.getElementById('legendItems');
 
+  // Elements for the new city preview overlay
+  const cityPreview = document.getElementById('cityPreview');
+  const previewMini = document.getElementById('previewMini');
+  const previewInfo = document.getElementById('previewInfo');
+  const previewClose = document.getElementById('previewClose');
+
   let W=0, H=0, SCALE=1, panX=0, panY=0;
   let isDragging=false, dragStartX=0, dragStartY=0, panStartX=0, panStartY=0;
   let worldW=1024, worldH=768; // logical map size in world units
@@ -193,8 +307,11 @@
 
   let CURRENT = {
     seed: 'demo', cities: [], pois: [], factions: [], roads: [], rivers: [], riverMask:null,
-    waterLevel: .45, chaos: .45, detail:'med', 
-    height: null, slope: null, landMask:null, coastSegments:[], legend:[], 
+    waterLevel: .45, chaos: .45, detail:'med',
+    height: null, slope: null, landMask:null, coastSegments:[], legend:[],
+    // Track currently hovered city or point of interest for animation
+    hoverCity: null,
+    hoverPoi: null,
   };
 
   // ---------- Coordinate transforms
@@ -252,8 +369,22 @@
       tooltip.style.left = e.clientX + 'px';
       tooltip.style.top = e.clientY + 'px';
       tooltip.innerHTML = hit.tooltip;
+      // Update hover identifiers for animation effects
+      if(hit.kind==='city'){
+        CURRENT.hoverCity = hit.data.id;
+        CURRENT.hoverPoi = null;
+      } else if(hit.kind==='poi'){
+        CURRENT.hoverCity = null;
+        CURRENT.hoverPoi = hit.data.id;
+      }
     } else {
       tooltip.classList.add('hidden');
+      CURRENT.hoverCity = null;
+      CURRENT.hoverPoi = null;
+    }
+    // Redraw to reflect hover changes when not dragging
+    if(!isDragging){
+      draw();
     }
   }
   function onMouseUp(){ isDragging=false; }
@@ -275,6 +406,13 @@
 
   panelClose.addEventListener('click', ()=>{panel.style.display='none'});
 
+  // Close button for the city preview overlay
+  if(previewClose){
+    previewClose.addEventListener('click', () => {
+      cityPreview.style.display = 'none';
+    });
+  }
+
   // ---------- Map Generation Pipeline
   function generate(opts){
     const seed = opts.seed || 'seed';
@@ -282,9 +420,30 @@
     const rnd = randFromSeed(seed);
     CURRENT.seed = seed;
 
-    // Resolution by detail (logical world size)
-    const base = {low: 800, med: 1200, high: 1600}[detail];
-    worldW = base; worldH = Math.floor(base*0.65);
+    // Apply user-selected colors to palette arrays and road/river colours. Generate gradients by lightening the base colour.
+    if(opts.colors){
+      const col = opts.colors;
+      OceanSteps = generateGradient(col.ocean || '#2b67bf', 8, 0.6);
+      // Generate a gradient for MapColors from the selected land colour. The gradient length defaults to the current palette length to preserve distribution.
+      const steps = MapColors.length > 0 ? MapColors.length : 9;
+      MapColors = generateGradient(col.land || '#8fb065', steps, 0.5);
+      // If the user provided explicit hill/mountain colours we incorporate them as additional stops in MapColors. This ensures all land colours come from the same list regardless of how many the user adds.
+      if(col.hills){
+        MapColors.push(col.hills);
+      }
+      if(col.mountains){
+        MapColors.push(col.mountains);
+      }
+      RiverColor = col.river || RiverColor;
+      RoadColor = col.road || RoadColor;
+    }
+
+    // Resolution by detail (logical world size). Multiply by devicePixelRatio to improve visual fidelity on high-density screens.
+    const dpr = DPI();
+    const baseRes = {low: 800, med: 1200, high: 1600, ultra: 2400};
+    const base = baseRes[detail] || baseRes['med'];
+    worldW = Math.floor(base * dpr);
+    worldH = Math.floor(worldW * 0.65);
 
     // Prepare canvases
     baseOff.width = worldW; baseOff.height = worldH;
@@ -293,6 +452,8 @@
     // Noise & heightfield
     const {fbm} = makeValueNoise2D(seed);
     const chaos = opts.chaos ?? .45; // 0..1
+    // Mountain weighting based on user slider (0..100). Increase this to emphasize mountains in the heightfield.
+    const mIntensity = opts.mountains !== undefined ? opts.mountains : 30;
     const waterPct = (opts.waterPct ?? .45)/100; // expect 20..75 in UI, normalize later
 
     // Generate raw height, then warp for islands: radial falloff
@@ -313,11 +474,13 @@
         const nx = x/w - 0.5, ny = y/h - 0.5;
         const d = Math.hypot(nx,ny);
         const island = clamp(1.0 - d*1.35, 0, 1); // more chaotic coast
-        const n = fbm(x*0.006 + chaos*2.17, y*0.006 - chaos*1.13, oct, lac, gain); // 0..1
-        // Add some ridged noise for mountains
-        const r = Math.abs(fbm(x*0.015+97, y*0.015-37, 3, 2.2, 0.55)*2-1);
-        const mnt = Math.pow(1-r, 3);
-        let val = (n*0.7 + mnt*0.3);
+        const n = fbm(x*0.006 + chaos*2.17, y*0.006 - chaos*1.13, oct, lac, gain); // base noise 0..1
+        // Ridged noise for mountains: emphasise peaks by inverting the absolute difference from mid-level.
+        const ridgedSample = fbm(x*0.02 + 97, y*0.02 - 37, 5, 2.2, 0.55);
+        const ridged = 1 - Math.abs(ridgedSample * 2 - 1); // high values at peaks
+        // Blend base noise and ridged noise based on intensity slider.
+        const mWeight = (mIntensity / 100); // 0..1, higher values emphasise ridged noise
+        let val = n * (1 - mWeight) + ridged * mWeight;
         val = val*island + (val*0.1)*(1-island); // soften edges into ocean
         height[y*w+x] = val; // 0..1
       }
@@ -459,7 +622,8 @@
     }
 
     // Factions
-    const factionCount = clamp(Math.floor(4 + rnd()*4), 3, 7);
+    // Determine number of factions: use user-provided value if present, otherwise random within 3..7.
+    const factionCount = opts.factions && opts.factions > 0 ? clamp(opts.factions, 3, 10) : clamp(Math.floor(4 + rnd()*4), 3, 7);
     const factions = [];
     const hueBase = rnd();
     for(let i=0;i<factionCount;i++){
@@ -536,7 +700,9 @@
 
     // Render layers
     renderBase();
-    renderOverlay();
+    // Render overlay to the offscreen canvas at world scale for export
+    renderOverlay(overlayCtx, 1);
+    // Draw to main canvas
     draw();
   }
 
@@ -645,19 +811,25 @@
     // Step color fill
     const img = ctx.createImageData(w,h); const data = img.data;
     for(let i=0;i<height.length;i++){
-      const z=height[i]; let r=0,g=0,b=0; // choose step palette
+      const z=height[i]; let r=0,g=0,b=0;
+      // For heights below water level, use the ocean palette.
       if(z<waterLevel){
         const t = clamp((z/(waterLevel+1e-6))*OceanSteps.length,0,OceanSteps.length-1);
         const col = hexToRgb(OceanSteps[Math.floor(t)]);
         r=col.r; g=col.g; b=col.b;
       } else {
         const zRel = (z-waterLevel)/(1-waterLevel+1e-6);
-        let col;
-        if(zRel<0.08){ col=hexToRgb(Beach); }
-        else if(zRel<0.45){ const t=Math.floor((zRel-0.08)/0.37 * LandSteps.length); col=hexToRgb(LandSteps[clamp(t,0,LandSteps.length-1)]); }
-        else if(zRel<0.75){ const t=Math.floor((zRel-0.45)/0.30 * HillSteps.length); col=hexToRgb(HillSteps[clamp(t,0,HillSteps.length-1)]); }
-        else { const t=Math.floor((zRel-0.75)/0.25 * MountainSteps.length); col=hexToRgb(MountainSteps[clamp(t,0,MountainSteps.length-1)]); }
-        r=col.r; g=col.g; b=col.b;
+        // Beach threshold remains fixed for the sandy shore.
+        if(zRel<0.08){
+          const col = hexToRgb(Beach);
+          r=col.r; g=col.g; b=col.b;
+        } else {
+          // Determine index into the MapColors array. All elevations above beach share this palette.
+          const tIndex = Math.floor((zRel-0.08)/0.92 * MapColors.length);
+          const idx = clamp(tIndex, 0, MapColors.length-1);
+          const col = hexToRgb(MapColors[idx]);
+          r=col.r; g=col.g; b=col.b;
+        }
       }
       data[i*4+0]=r; data[i*4+1]=g; data[i*4+2]=b; data[i*4+3]=255;
     }
@@ -691,96 +863,175 @@
     ctx.restore();
   }
 
-  function renderOverlay(){
+  // Render overlay features (roads, POIs, and city labels) to a given context.
+  // This function accepts an optional rendering context and a zoom level. When called
+  // without arguments, it draws onto the offscreen overlay canvas at world scale (zoom=1).
+  // When drawing to the main canvas, pass in the current `ctx` and the current `SCALE` so
+  // labels and icons maintain a consistent size on screen.
+  function renderOverlay(targetCtx = overlayCtx, zoom = 1){
+    const ctx = targetCtx;
     const {cities, roads, factions, pois} = CURRENT;
-    const w=worldW, h=worldH; const ctx=overlayCtx; ctx.clearRect(0,0,w,h);
-
-    // Roads (under cities)
+    // If we're drawing to the offscreen overlay, clear it first.
+    if (ctx === overlayCtx) {
+      ctx.clearRect(0, 0, worldW, worldH);
+    }
+    // Compute scale factors: using 1/zoom keeps elements constant size on screen.
+    const scaleFactor = 1 / zoom;
+    const clampedScale = clamp(scaleFactor, 0.4, 3.0);
+    // Draw roads
     ctx.save();
-    ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     for(const r of roads){
-      // edge shadow
-      ctx.strokeStyle = RoadEdge; ctx.lineWidth = 4.6; ctx.globalAlpha=0.45;
-      ctx.beginPath(); for(let i=0;i<r.path.length;i++){ const p=r.path[i]; if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y);} ctx.stroke();
-      // road body
-      ctx.strokeStyle = RoadColor; ctx.lineWidth = 3.2; ctx.globalAlpha=0.95;
-      ctx.beginPath(); for(let i=0;i<r.path.length;i++){ const p=r.path[i]; if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y);} ctx.stroke();
-      // bridges
-      ctx.globalAlpha=1.0; ctx.fillStyle=BridgeColor; ctx.strokeStyle='#0007';
+      // Draw edge/shadow
+      ctx.strokeStyle = RoadEdge;
+      ctx.lineWidth = 4.6 * clampedScale;
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath();
+      for(let i=0;i<r.path.length;i++){
+        const p = r.path[i];
+        if(i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+      // Draw road body
+      ctx.strokeStyle = RoadColor;
+      ctx.lineWidth = 3.2 * clampedScale;
+      ctx.globalAlpha = 0.95;
+      ctx.beginPath();
+      for(let i=0;i<r.path.length;i++){
+        const p = r.path[i];
+        if(i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+      // Draw bridges
+      ctx.globalAlpha = 1.0;
+      ctx.fillStyle = BridgeColor;
+      ctx.strokeStyle = '#0007';
       for(const b of r.bridges){
-        const size=6; roundRect(ctx, b.x-size, b.y-2, size*2, 4, 2); ctx.fill(); ctx.stroke();
+        const size = 6 * clampedScale;
+        roundRect(ctx, b.x - size, b.y - 2 * clampedScale, size * 2, 4 * clampedScale, 2 * clampedScale);
+        ctx.fill();
+        ctx.stroke();
       }
     }
     ctx.restore();
-
-    // POIs
+    // Draw points of interest
     for(const p of pois){
-      drawPOI(ctx, p);
+      drawPOI(ctx, p, scaleFactor, clampedScale);
     }
-
-    // Cities and labels
+    // Draw city icons and labels
     ctx.save();
-    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
     for(const c of cities){
-      // banner behind name for towns/cities (faction color)
-      const color = factions[c.faction]?.color || '#888';
+      const isHover = CURRENT.hoverCity === c.id;
+      // Determine font size based on city type
+      const baseFont = c.type==='village' ? 10 : c.type==='town' ? 12 : c.type==='city' ? 14 : c.type==='capital' ? 16 : 12;
+      const fontSize = baseFont * clampedScale * (isHover ? 1.2 : 1.0);
+      ctx.font = `bold ${fontSize}px/1.2 'Palatino Linotype', 'Book Antiqua', Palatino, 'Georgia', serif`;
       const label = c.name;
-      let fontSize = c.type==='village'? 10 : c.type==='town'? 12 : c.type==='city'? 14 : c.type==='capital'? 16 : 12;
-      ctx.font = `bold ${fontSize}px/1.2 system-ui,Segoe UI,Roboto`;
-      const m = ctx.measureText(label);
-      const padX=6, padY=3; const bw=m.width+padX*2, bh=fontSize+padY*2;
-      if(c.type!=='village'){
-        ctx.save();
-        ctx.globalAlpha=0.85; ctx.fillStyle=hexWithAlpha(color, 0.18); ctx.strokeStyle=hexWithAlpha(color, 0.6);
-        roundRect(ctx, c.x - bw/2, c.y - 20 - padY, bw, bh, 6); ctx.fill(); ctx.stroke();
-        ctx.restore();
-      }
-      // dot
+      const metrics = ctx.measureText(label);
+      const padX = 6 * clampedScale;
+      const padY = 3 * clampedScale;
+      const bw = metrics.width + padX * 2;
+      const bh = fontSize + padY * 2;
+      // Banner colour based on faction
+      const bannerColour = factions[c.faction]?.color || '#888';
+      ctx.save();
+      ctx.globalAlpha = isHover ? 0.95 : 0.85;
+      ctx.fillStyle = hexWithAlpha(bannerColour, 0.18);
+      ctx.strokeStyle = hexWithAlpha(bannerColour, 0.6);
+      roundRect(ctx, c.x - bw/2, c.y - (20 * clampedScale) - padY, bw, bh, 6 * clampedScale);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      // Draw city dot
+      const baseRadius = c.type==='village' ? 2.2 : 3.0;
+      const radius = baseRadius * clampedScale * (isHover ? 1.4 : 1.0);
       ctx.fillStyle = c.type==='village' ? '#dcdcdc' : '#f4e4a4';
       ctx.strokeStyle = '#0008';
-      ctx.beginPath(); ctx.arc(c.x, c.y-4, c.type==='village'? 2.2 : 3.0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-      // label
-      ctx.fillStyle = c.type==='village'? '#bfc8d6' : c.type==='city'||c.type==='capital' ? '#ff5252' : '#e8e0c0';
-      ctx.fillText(label, c.x, c.y-20);
+      ctx.beginPath(); ctx.arc(c.x, c.y - 4 * clampedScale, radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Label colour depending on city type and hover state
+      let textCol;
+      if(c.type === 'village') textCol = '#bfc8d6';
+      else if(c.type === 'city' || c.type === 'capital') textCol = isHover ? '#ff8585' : '#ff5252';
+      else textCol = isHover ? '#f0d8a0' : '#e8e0c0';
+      ctx.fillStyle = textCol;
+      ctx.fillText(label, c.x, c.y - (20 * clampedScale));
     }
     ctx.restore();
   }
 
   function draw(){
-    // Composite base + overlay to main canvas with current transform
+    // Composite the base and overlay directly onto the main canvas. We re-render the overlay
+    // at the current zoom level to maintain crisp text and icon sizes.
     ctx.save();
-    ctx.clearRect(0,0,W,H);
-    ctx.imageSmoothingEnabled = false; // preserve crisp steps
-    ctx.setTransform(SCALE,0,0,SCALE, panX, panY);
-    ctx.drawImage(baseOff, 0,0);
-    ctx.drawImage(overlayOff, 0,0);
-    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0, 0, W, H);
+    // Apply world-to-screen transform
+    ctx.setTransform(SCALE, 0, 0, SCALE, panX, panY);
+    // Draw terrain (base) with smoothing enabled for smooth gradients
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(baseOff, 0, 0);
+    // Draw overlay (roads, POIs, cities) directly onto the main canvas at current zoom
+    // Vector drawings are inherently crisp; no need to toggle imageSmoothingEnabled here.
+    renderOverlay(ctx, SCALE);
+    // Restore to default coordinate system
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.restore();
   }
 
   // ---------- POI Drawing
-  function drawPOI(ctx, poi){
-    const {x,y,type,name} = poi;
+  // Draw a point of interest (POI) icon and label on the provided context. Accepts
+  // optional scale parameters so the size can remain consistent across zoom levels.
+  function drawPOI(ctx, poi, scaleFactor = 1 / SCALE, clampedScale = clamp(scaleFactor, 0.4, 3.0)){
+    const {x, y, type, name} = poi;
     ctx.save();
-    ctx.strokeStyle='#0009';
-    ctx.fillStyle = '#d1d5db';
+    const isHover = CURRENT.hoverPoi === poi.id;
+    // Determine sizes for the icon and stroke based on scale and hover state
+    const strokeWidth = 1.0 * clampedScale * (isHover ? 1.4 : 1.0);
+    const sizeUnit = 4 * clampedScale * (isHover ? 1.4 : 1.0);
+    ctx.strokeStyle = isHover ? '#ffcc66' : '#0009';
+    ctx.fillStyle = isHover ? '#ffe0b0' : '#d1d5db';
     switch(type){
       case 'ruins':
-        // broken arch
-        ctx.beginPath(); ctx.moveTo(x-4,y-2); ctx.lineTo(x-1,y-8); ctx.lineTo(x+1,y-8); ctx.lineTo(x+4,y-2); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x - sizeUnit, y - sizeUnit/2);
+        ctx.lineTo(x - sizeUnit/4, y - sizeUnit*2);
+        ctx.lineTo(x + sizeUnit/4, y - sizeUnit*2);
+        ctx.lineTo(x + sizeUnit, y - sizeUnit/2);
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
         break;
       case 'tower':
-        ctx.beginPath(); ctx.rect(x-2,y-8,4,6); ctx.moveTo(x-2,y-8); ctx.lineTo(x+2,y-8); ctx.stroke();
+        ctx.beginPath();
+        ctx.rect(x - sizeUnit/2, y - sizeUnit*2, sizeUnit, sizeUnit*1.5);
+        ctx.moveTo(x - sizeUnit/2, y - sizeUnit*2);
+        ctx.lineTo(x + sizeUnit/2, y - sizeUnit*2);
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
         break;
       case 'shrine':
-        ctx.beginPath(); ctx.arc(x,y-6,3,0,Math.PI*2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y - sizeUnit*1.5, sizeUnit*0.6, 0, Math.PI * 2);
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
         break;
       case 'crypt':
-        ctx.beginPath(); ctx.moveTo(x-4,y-2); ctx.lineTo(x,y-8); ctx.lineTo(x+4,y-2); ctx.closePath(); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x - sizeUnit, y - sizeUnit/2);
+        ctx.lineTo(x, y - sizeUnit*2);
+        ctx.lineTo(x + sizeUnit, y - sizeUnit/2);
+        ctx.closePath();
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
         break;
     }
-    ctx.font='10px system-ui,Segoe UI,Roboto'; ctx.textAlign='center'; ctx.textBaseline='top';
-    ctx.fillStyle='#9aa4b2'; ctx.fillText(name, x, y-18);
+    // Draw POI label
+    const fontSize = 10 * clampedScale * (isHover ? 1.2 : 1.0);
+    ctx.font = `${fontSize}px 'Palatino Linotype', 'Book Antiqua', Palatino, 'Georgia', serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = isHover ? '#ffe0b0' : '#9aa4b2';
+    ctx.fillText(name, x, y - sizeUnit * 3);
     ctx.restore();
   }
 
@@ -804,24 +1055,52 @@
 
   // ---------- City Panel + Minimap
   function openCityPanel(city){
+    // Populate the old panel for compatibility (hidden), but primarily update the new city preview overlay
     panelTitle.textContent = city.name;
     panelType.textContent = city.type;
     panelFaction.textContent = CURRENT.factions[city.faction]?.name || '—';
     panelPop.textContent = city.pop.toLocaleString();
     panelPros.textContent = city.prosperity;
     panelDesc.textContent = describeCity(city);
-    panel.style.display='flex';
-    drawCityMini(city);
+    // Hide the old side panel; we'll use the cityPreview overlay instead
+    panel.style.display = 'none';
+    // Show the city preview overlay and populate its contents
+    if(cityPreview){
+      cityPreview.style.display = 'block';
+      // Build info content
+      const fName = CURRENT.factions[city.faction]?.name || '—';
+      previewInfo.innerHTML = `
+        <div style="font-weight:bold;font-size:16px;margin-bottom:4px;">${escapeHtml(city.name)}</div>
+        <div><strong>Tipo:</strong> ${escapeHtml(city.type)}</div>
+        <div><strong>Facção:</strong> ${escapeHtml(fName)}</div>
+        <div><strong>População:</strong> ${city.pop.toLocaleString()}</div>
+        <div><strong>Prosperidade:</strong> ${escapeHtml(city.prosperity)}</div>
+        <div style="margin-top:6px;">${escapeHtml(describeCity(city))}</div>
+      `;
+      // Draw the minimap into previewMini
+      drawCityMini(city, previewMini);
+    }
   }
 
-  function drawCityMini(city){
-    const dpr=DPI(); const w=cityMini.clientWidth*dpr, h=cityMini.clientHeight*dpr;
-    cityMini.width=w; cityMini.height=h; const c=cityMini.getContext('2d');
-    c.clearRect(0,0,w,h); c.fillStyle='#0b0e14'; c.fillRect(0,0,w,h);
+  function drawCityMini(city, targetCanvas = cityMini){
+    // Determine target canvas dimensions based on its client size and device pixel ratio
+    const dpr = DPI();
+    const w = targetCanvas.clientWidth * dpr;
+    const h = targetCanvas.clientHeight * dpr;
+    targetCanvas.width = w;
+    targetCanvas.height = h;
+    const c = targetCanvas.getContext('2d');
+    c.clearRect(0, 0, w, h);
+    c.fillStyle = '#0b0e14';
+    c.fillRect(0, 0, w, h);
 
     // Use a per-city RNG for layout variety
     const rnd = randFromSeed(CURRENT.seed + '|city|' + city.id);
-    c.save(); c.translate(w/2,h/2); c.scale(1,1);
+    c.save();
+    // Center the drawing and apply a uniform scale so that the map fits within the canvas regardless of its aspect ratio.
+    c.translate(w/2, h/2);
+    const scale = Math.min(w, h) / 200; // 200 is an arbitrary base size to normalise city features
+    c.scale(scale, scale);
 
     // Road styles
     c.lineCap='round'; c.lineJoin='round';
@@ -853,7 +1132,9 @@
       // harbor area
       c.fillStyle='#0b3a5a'; c.fillRect(-w/2,-h/2, w/2+20, h);
       c.strokeStyle='#b49661'; c.lineWidth=2.4; c.beginPath(); c.moveTo(0,-h/2+14); c.lineTo(0,h/2-14); c.stroke();
-      for(let d=-3; d<=3; d++){ c.beginPath(); c.moveTo(0, d*30); c.lineTo(70, d*30 + (rnd()-0.5)*10); c.stroke(); }
+      for(let d=-3; d<=3; d++){
+        c.beginPath(); c.moveTo(0, d*30); c.lineTo(70, d*30 + (rnd()-0.5)*10); c.stroke();
+      }
       drawDocks(c, rnd);
     }
 
@@ -946,10 +1227,133 @@
     const water = parseInt(document.getElementById('water').value||45,10);
     const chaos = parseInt(document.getElementById('chaos').value||45,10)/100;
     const detail = document.getElementById('detail').value;
-    generate({seed, cities, rivers, waterPct: water, chaos, detail});
+    // Additional user-configurable settings
+    const mountains = parseInt(document.getElementById('mountains').value || 30, 10);
+    const factions = parseInt(document.getElementById('factions').value || 0, 10);
+    const colors = {
+      ocean: document.getElementById('colorOcean').value,
+      land: document.getElementById('colorLand').value,
+      hills: document.getElementById('colorHills').value,
+      mountains: document.getElementById('colorMountains').value,
+      river: document.getElementById('colorRiver').value,
+      road: document.getElementById('colorRoad').value
+    };
+    generate({seed, cities, rivers, waterPct: water, chaos, detail, mountains, factions, colors});
   });
   document.getElementById('export').addEventListener('click', ()=>{
     exportPNG();
+  });
+
+  // Display slider values in the UI
+  function updateSliderDisplay(id, val, suffix=''){
+    const el = document.getElementById(id);
+    if(el) el.textContent = val + suffix;
+  }
+  // Attach listeners to range inputs to update display values
+  const waterSlider = document.getElementById('water');
+  const waterValEl = document.getElementById('waterVal');
+  if(waterSlider && waterValEl){
+    waterSlider.addEventListener('input', ()=>{ updateSliderDisplay('waterVal', waterSlider.value, '%'); });
+    // Initialize display
+    updateSliderDisplay('waterVal', waterSlider.value, '%');
+  }
+  const chaosSlider = document.getElementById('chaos');
+  if(chaosSlider){
+    chaosSlider.addEventListener('input', ()=>{ updateSliderDisplay('chaosVal', chaosSlider.value); });
+    updateSliderDisplay('chaosVal', chaosSlider.value);
+  }
+  const mountainsSlider = document.getElementById('mountains');
+  if(mountainsSlider){
+    mountainsSlider.addEventListener('input', ()=>{ updateSliderDisplay('mountainsVal', mountainsSlider.value); });
+    updateSliderDisplay('mountainsVal', mountainsSlider.value);
+  }
+
+  // ---------- Custom colour palette management ----------
+  // This palette controls the colours used for land and influences hills and mountain colours.
+  let customPalette = [];
+  function renderColorList(){
+    const container = document.getElementById('colorList');
+    if(!container) return;
+    container.innerHTML = '';
+    customPalette.forEach((col, idx) => {
+      const row = document.createElement('div');
+      row.style.display='flex'; row.style.gap='6px'; row.style.alignItems='center';
+      const inp = document.createElement('input'); inp.type='color'; inp.value=col;
+      inp.addEventListener('input', ()=>{
+        customPalette[idx] = inp.value;
+        updatePalette();
+      });
+      const btn = document.createElement('button'); btn.textContent='×'; btn.className='btn'; btn.style.flex='0 0 auto'; btn.style.padding='4px 8px';
+      btn.addEventListener('click', ()=>{
+        customPalette.splice(idx,1);
+        renderColorList();
+        updatePalette();
+      });
+      row.appendChild(inp);
+      row.appendChild(btn);
+      container.appendChild(row);
+    });
+  }
+  // Deferred palette update to avoid triggering expensive re-renders for each drag event.
+  let paletteUpdateTimeout;
+  function updatePaletteImmediate(){
+    if(customPalette && customPalette.length>0){
+      MapColors = customPalette.slice();
+      renderBase();
+      draw();
+    }
+  }
+  function updatePalette(){
+    clearTimeout(paletteUpdateTimeout);
+    paletteUpdateTimeout = setTimeout(updatePaletteImmediate, 200);
+  }
+  // Set up add/remove controls once DOM is ready
+  window.addEventListener('load', () => {
+    const addBtn = document.getElementById('addColor');
+    if(addBtn){
+      addBtn.addEventListener('click', ()=>{
+        customPalette.push('#6b9b59');
+        renderColorList();
+        updatePalette();
+      });
+    }
+    // Initialise palette with a few colours matching the default land colours
+    customPalette = ['#8fb065','#6b9b59','#3e6f45'];
+    renderColorList();
+    updatePalette();
+
+    // Real-time updates for base colour pickers (ocean, land, hills, mountains, rivers, roads)
+    // Throttled colour update function
+    let colourUpdateTimeout;
+    function updateColoursImmediate(){
+      const col = {
+        ocean: document.getElementById('colorOcean').value,
+        land: document.getElementById('colorLand').value,
+        hills: document.getElementById('colorHills').value,
+        mountains: document.getElementById('colorMountains').value,
+        river: document.getElementById('colorRiver').value,
+        road: document.getElementById('colorRoad').value
+      };
+      OceanSteps = generateGradient(col.ocean || '#2b67bf', 8, 0.6);
+      // Recompute land palette using MapColors length. Land, hills and mountains selections are appended to MapColors for a smooth gradient.
+      const steps = MapColors.length > 0 ? MapColors.length : 9;
+      MapColors = generateGradient(col.land || '#8fb065', steps, 0.5);
+      if(col.hills){ MapColors.push(col.hills); }
+      if(col.mountains){ MapColors.push(col.mountains); }
+      RiverColor = col.river || RiverColor;
+      RoadColor = col.road || RoadColor;
+      renderBase();
+      draw();
+    }
+    function updateColours(){
+      clearTimeout(colourUpdateTimeout);
+      colourUpdateTimeout = setTimeout(updateColoursImmediate, 200);
+    }
+    const ids = ['colorOcean','colorLand','colorHills','colorMountains','colorRiver','colorRoad'];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if(el){ el.addEventListener('input', updateColours); }
+    });
   });
 
   // ---------- Export
@@ -970,6 +1374,44 @@
     return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
   }
   function hexWithAlpha(hex, a){ const {r,g,b} = hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; }
+  // Convert RGB values back to a hex string.
+  function rgbToHex(r,g,b){
+    const toHex = (v) => v.toString(16).padStart(2,'0');
+    return '#'+toHex(r)+toHex(g)+toHex(b);
+  }
+
+  // Lighten a hex color by a given fraction (0..1). A fraction of 0 returns the original color, 1 returns white.
+  function lightenColor(hex, fraction){
+    const {r,g,b} = hexToRgb(hex);
+    const R = Math.round(r + (255 - r) * fraction);
+    const G = Math.round(g + (255 - g) * fraction);
+    const B = Math.round(b + (255 - b) * fraction);
+    return rgbToHex(R,G,B);
+  }
+
+  // Darken a hex color by a given fraction (0..1). A fraction of 0 returns the original color, 1 returns black.
+  function darkenColor(hex, fraction){
+    const {r,g,b} = hexToRgb(hex);
+    const R = Math.round(r * (1 - fraction));
+    const G = Math.round(g * (1 - fraction));
+    const B = Math.round(b * (1 - fraction));
+    return rgbToHex(R,G,B);
+  }
+
+  // Generate a gradient array from a base color by progressively lightening it.
+  // maxLighten controls how much lighter the last color is compared to the base.
+  function generateGradient(baseColor, steps, maxLighten){
+    const arr=[];
+    for(let i=0;i<steps;i++){
+      const t = steps>1 ? (i/(steps-1)) : 0;
+      arr.push(lightenColor(baseColor, t * maxLighten));
+    }
+    return arr;
+  }
+
+  // Banner colors behind city labels for improved readability.
+  const NameBannerColor = 'rgba(28, 33, 52, 0.7)';
+  const NameBannerBorder = 'rgba(0, 0, 0, 0.3)';
   function escapeHtml(s){ return s.replace(/[&<>"]+/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
 
   // ---------- Initial setup
