@@ -102,56 +102,179 @@
   }
   /* Banners behind labels */
   .label-banner{position:absolute}
+
+  /* Tabbed interface styles */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:8px;
+  }
+  .tabBtn{
+    flex:1;
+    background:#5a4c3b;
+    border:1px solid #7b654e;
+    border-radius:6px;
+    color:#e5dccc;
+    padding:4px 6px;
+    cursor:pointer;
+    font-size:13px;
+    font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;
+  }
+  .tabBtn.active{
+    background:#806542;
+    border-color:#806542;
+  }
+  .tabContent{
+    display:none;
+  }
+  .tabContent.active{
+    display:block;
+  }
 </style>
 </head>
 <body>
   <div id="ui">
     <h3>⚙️ Map Generator</h3>
-    <div class="row"><label>Seed</label><input id="seed" type="text" placeholder="my-seed" /></div>
-    <div class="row"><label>Cities</label><input id="cities" type="number" min="10" max="300" value="120" /></div>
-    <div class="row"><label>Rivers</label><input id="rivers" type="number" min="0" max="50" value="12" /></div>
-    <div class="row"><label>Water %</label>
-      <div style="display:flex;align-items:center;gap:4px">
-        <input id="water" type="range" min="20" max="75" value="45" style="flex:1" />
-        <span id="waterVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45%</span>
+    <!-- Tab buttons for organizing settings into sections -->
+    <div class="tabs">
+      <button class="tabBtn" data-tab="tabGeneral">Geral</button>
+      <button class="tabBtn" data-tab="tabTerrain">Terreno</button>
+      <button class="tabBtn" data-tab="tabCities">Cidades</button>
+      <button class="tabBtn" data-tab="tabRoads">Estradas &amp; Rios</button>
+      <button class="tabBtn" data-tab="tabColors">Cores</button>
+      <button class="tabBtn" data-tab="tabPalette">Paleta</button>
+    </div>
+    <!-- General settings -->
+    <div id="tabGeneral" class="tabContent">
+      <div class="row"><label>Seed</label><input id="seed" type="text" placeholder="my-seed" /></div>
+      <div class="row"><label>Cities</label><input id="cities" type="number" min="10" max="300" value="120" /></div>
+      <div class="row"><label>Rivers</label><input id="rivers" type="number" min="0" max="50" value="12" /></div>
+      <div class="row"><label>Water %</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="water" type="range" min="20" max="75" value="45" style="flex:1" />
+          <span id="waterVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45%</span>
+        </div>
+      </div>
+      <div class="row"><label>Chaos</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="chaos" type="range" min="0" max="100" value="45" style="flex:1" />
+          <span id="chaosVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45</span>
+        </div>
+      </div>
+      <div class="row"><label>Detail</label>
+        <select id="detail">
+          <option value="low">Low (fast)</option>
+          <option value="med" selected>Medium</option>
+          <option value="high">High</option>
+          <option value="ultra">Ultra</option>
+        </select>
       </div>
     </div>
-    <div class="row"><label>Chaos</label>
-      <div style="display:flex;align-items:center;gap:4px">
-        <input id="chaos" type="range" min="0" max="100" value="45" style="flex:1" />
-        <span id="chaosVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">45</span>
+    <!-- Terrain settings -->
+    <div id="tabTerrain" class="tabContent">
+      <div class="row"><label>Montanhas</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="mountains" type="range" min="0" max="100" value="30" style="flex:1" />
+          <span id="mountainsVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">30</span>
+        </div>
+      </div>
+      <div class="row"><label>Resolução</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="terrainRes" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="terrainResVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <div class="row"><label>Facções</label><input id="factions" type="number" min="3" max="10" value="5" /></div>
+      <div class="row"><label>Limite de Slope</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="slopeLimit" type="range" min="0" max="50" value="15" style="flex:1" />
+          <span id="slopeLimitVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">15</span>
+        </div>
+      </div>
+      <div class="row"><label>Escala de Umidade</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="moistureScale" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="moistureScaleVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <div class="row"><label>Escala de Temp.</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="tempScale" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="tempScaleVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <div class="row"><label>Diversidade de Bioma</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="biomeDiv" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="biomeDivVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <!-- New terrain tweak: Peak Frequency -->
+      <div class="row"><label>Freq. de Picos</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="peakFreq" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="peakFreqVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
       </div>
     </div>
-    <div class="row"><label>Detail</label>
-      <select id="detail">
-        <option value="low">Low (fast)</option>
-        <option value="med" selected>Medium</option>
-        <option value="high">High</option>
-        <option value="ultra">Ultra</option>
-      </select>
-    </div>
-
-    <!-- Additional settings grouped into categories for better organization -->
-    <h4 style="margin:10px 0 4px;color:#e2e8f0">🛠️&nbsp;Terreno</h4>
-    <div class="row"><label>Montanhas</label>
-      <div style="display:flex;align-items:center;gap:4px">
-        <input id="mountains" type="range" min="0" max="100" value="30" style="flex:1" />
-        <span id="mountainsVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">30</span>
+    <!-- City settings -->
+    <div id="tabCities" class="tabContent">
+      <div class="row"><label>Tamanho Variável</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="citySizeVar" type="range" min="0" max="1.0" step="0.1" value="0.2" style="flex:1" />
+          <span id="citySizeVarVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">0.2</span>
+        </div>
+      </div>
+      <div class="row"><label>Agrupamento</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="cityCluster" type="range" min="0" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="cityClusterVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <!-- New city tweak: City Spacing -->
+      <div class="row"><label>Espaçamento</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="citySpacing" type="range" min="0.5" max="3.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="citySpacingVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
       </div>
     </div>
-    <div class="row"><label>Facções</label><input id="factions" type="number" min="3" max="10" value="5" /></div>
-
-    <h4 style="margin:10px 0 4px;color:#e2e8f0">🎨&nbsp;Cores</h4>
-    <div class="row"><label>Oceano</label><input id="colorOcean" type="color" value="#3d7ed0" /></div>
-    <div class="row"><label>Terra</label><input id="colorLand" type="color" value="#8fb065" /></div>
-    <div class="row"><label>Colinas</label><input id="colorHills" type="color" value="#6f6549" /></div>
-    <div class="row"><label>Montanhas</label><input id="colorMountains" type="color" value="#8a8a8a" /></div>
-    <div class="row"><label>Rios</label><input id="colorRiver" type="color" value="#4fb7ff" /></div>
-    <div class="row"><label>Estradas</label><input id="colorRoad" type="color" value="#caa66a" /></div>
-
-    <h4 style="margin:10px 0 4px;color:#e2e8f0">🎨&nbsp;Paleta do Mapa</h4>
-    <div id="colorList" style="display:flex;flex-direction:column;gap:6px;"></div>
-    <button id="addColor" class="btn" style="margin-top:4px;">+ Adicionar Cor</button>
+    <!-- Road & river settings -->
+    <div id="tabRoads" class="tabContent">
+      <div class="row"><label>Densidade de Estradas</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="roadDensity" type="range" min="0.1" max="1.0" step="0.05" value="0.35" style="flex:1" />
+          <span id="roadDensityVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">0.35</span>
+        </div>
+      </div>
+      <div class="row"><label>Largura dos Rios</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="riverWidth" type="range" min="0.5" max="3.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="riverWidthVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+      <!-- New road tweak: Curvatura -->
+      <div class="row"><label>Curvatura das Estradas</label>
+        <div style="display:flex;align-items:center;gap:4px">
+          <input id="roadCurvature" type="range" min="0.5" max="2.0" step="0.1" value="1.0" style="flex:1" />
+          <span id="roadCurvatureVal" style="min-width:30px;text-align:right;color:#d6c4a5;font-family:'Palatino Linotype','Book Antiqua',Palatino,'Georgia',serif;">1.0</span>
+        </div>
+      </div>
+    </div>
+    <!-- Colour settings -->
+    <div id="tabColors" class="tabContent">
+      <div class="row"><label>Oceano</label><input id="colorOcean" type="color" value="#3d7ed0" /></div>
+      <div class="row"><label>Terra</label><input id="colorLand" type="color" value="#8fb065" /></div>
+      <div class="row"><label>Colinas</label><input id="colorHills" type="color" value="#6f6549" /></div>
+      <div class="row"><label>Montanhas</label><input id="colorMountains" type="color" value="#8a8a8a" /></div>
+      <div class="row"><label>Rios</label><input id="colorRiver" type="color" value="#4fb7ff" /></div>
+      <div class="row"><label>Estradas</label><input id="colorRoad" type="color" value="#caa66a" /></div>
+    </div>
+    <!-- Palette settings -->
+    <div id="tabPalette" class="tabContent">
+      <div id="colorList" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <button id="addColor" class="btn" style="margin-top:4px;">+ Adicionar Cor</button>
+    </div>
     <div class="btns">
       <button id="gen" class="btn primary">Generate</button>
       <button id="export" class="btn export">Export PNG</button>
@@ -442,8 +565,10 @@
     const dpr = DPI();
     const baseRes = {low: 800, med: 1200, high: 1600, ultra: 2400};
     const base = baseRes[detail] || baseRes['med'];
-    worldW = Math.floor(base * dpr);
-    worldH = Math.floor(worldW * 0.65);
+    // Apply terrain resolution scaling. A factor >1 increases pixel density, <1 decreases it.
+    const resFactor = opts.terrainRes || 1.0;
+    worldW = Math.floor(base * resFactor * dpr);
+    worldH = Math.floor((base * 0.65) * resFactor * dpr);
 
     // Prepare canvases
     baseOff.width = worldW; baseOff.height = worldH;
@@ -474,15 +599,27 @@
         const nx = x/w - 0.5, ny = y/h - 0.5;
         const d = Math.hypot(nx,ny);
         const island = clamp(1.0 - d*1.35, 0, 1); // more chaotic coast
-        const n = fbm(x*0.006 + chaos*2.17, y*0.006 - chaos*1.13, oct, lac, gain); // base noise 0..1
-        // Ridged noise for mountains: emphasise peaks by inverting the absolute difference from mid-level.
-        const ridgedSample = fbm(x*0.02 + 97, y*0.02 - 37, 5, 2.2, 0.55);
-        const ridged = 1 - Math.abs(ridgedSample * 2 - 1); // high values at peaks
-        // Blend base noise and ridged noise based on intensity slider.
-        const mWeight = (mIntensity / 100); // 0..1, higher values emphasise ridged noise
-        let val = n * (1 - mWeight) + ridged * mWeight;
-        val = val*island + (val*0.1)*(1-island); // soften edges into ocean
-        height[y*w+x] = val; // 0..1
+        // Multi-layer noise: combine low-frequency base noise, a domain-warped layer, and ridged noise for mountains.
+        // Primary low-frequency terrain noise
+        const n1 = fbm(x * 0.004 + chaos * 1.33, y * 0.004 - chaos * 2.17, oct, lac, gain);
+        // Secondary medium-frequency noise used for warping
+        const n2 = fbm(x * 0.012 + 47.3, y * 0.012 - 13.7, 3, 2.1, 0.55);
+        // Warp coordinates using n2 to break up repeating patterns
+        const warpX = x + (n2 - 0.5) * 100;
+        const warpY = y + (n2 - 0.5) * 100;
+        const n3 = fbm(warpX * 0.006, warpY * 0.006, 4, 2.0, 0.55);
+        const baseVal = (n1 + n3) * 0.5;
+        // Ridged noise for mountains: emphasise peaks by inverting the absolute difference from mid-level
+        // Ridged noise frequency scaled by user-defined peakFreq (default 1.0). Higher values create more frequent peaks.
+        const freq = (opts.peakFreq !== undefined ? opts.peakFreq : 1.0);
+        const ridgedSample = fbm(x * 0.02 * freq + 97, y * 0.02 * freq - 37, 5, 2.2, 0.55);
+        const ridged = 1 - Math.abs(ridgedSample * 2 - 1);
+        // Blend base terrain and ridged mountains based on user intensity
+        const mWeight = (mIntensity / 100);
+        let val = baseVal * (1 - mWeight) + ridged * mWeight;
+        // Apply island mask: blend towards base terrain near shore to soften edges
+        val = val * island + (baseVal * 0.1) * (1 - island);
+        height[y*w + x] = val;
       }
     }
     // Normalize & water level
@@ -514,6 +651,32 @@
     // Land/Water mask
     const landMask = new Uint8Array(w*h);
     for(let i=0;i<height.length;i++) landMask[i] = height[i]>=waterLevel?1:0;
+
+    // Compute temperature and moisture maps for biome classification. Temperature is influenced
+    // by latitude (north to south) with some noise, and moisture is driven by a separate noise
+    // function. These arrays will later inform biome colours and city climate descriptions.
+    const tempNoiseGen = makeValueNoise2D(seed + '|temp');
+    const moistNoiseGen = makeValueNoise2D(seed + '|moist');
+    const temperature = new Float32Array(w*h);
+    const moistureArr = new Float32Array(w*h);
+    // Apply temperature and moisture scales from options
+    const tempScale = opts.tempScale ?? 1.0;
+    const moistureScale = opts.moistureScale ?? 1.0;
+    for(let yy=0; yy<h; yy++){
+      const lat = 1 - (yy / h); // 1 at top (north), 0 at bottom (south)
+      for(let xx=0; xx<w; xx++){
+        const idx = yy*w + xx;
+        // Temperature: base on latitude plus noise variation scaled by tempScale
+        let t = lat;
+        const noiseT = tempNoiseGen.fbm(xx * 0.005, yy * 0.005, 3, 2.0, 0.5);
+        t += (noiseT - 0.5) * 0.3 * tempScale;
+        temperature[idx] = clamp(t, 0, 1);
+        // Moisture: noise value scaled by moistureScale
+        const noiseM = moistNoiseGen.fbm(xx * 0.02 + 127.5, yy * 0.02 - 93.3, 3, 2.0, 0.5);
+        let m = noiseM * moistureScale;
+        moistureArr[idx] = clamp(m, 0, 1);
+      }
+    }
 
     // Coast outline via grid-edge scan (marching squares-lite)
     const coastSegments = [];
@@ -598,19 +761,64 @@
     // Cities & POIs placement
     const totalCities = clamp(parseInt(opts.cities || 120), 5, 400);
     const citySpots = [];
+    // Determine slope threshold from options (range 0..50). Convert to 0..0.5.
+    const slopeThreshold = (opts.slopeLimit !== undefined ? opts.slopeLimit : 15) / 100;
     for(let y=3;y<h-3;y+=3){
       for(let x=3;x<w-3;x+=3){
         const i=y*w+x; if(!landMask[i]) continue; 
         if(height[i] < waterLevel+0.01) continue; // avoid swamps
         // Prefer flatter ground & near rivers/coast moderately
-        const s = slope[i]; if(s>0.10) continue; // too steep
+        const s = slope[i]; if(s > slopeThreshold) continue; // too steep for settlement
         let score = (height[i]-waterLevel)*2.0 + (0.12 - s)*2.5;
         // proximity to river
         const nearRiver = isNearMask(x,y,riverMask,w,h,4)?1:0; score += nearRiver*0.25;
         citySpots.push({x,y,score});
       }
     }
+    // Sort spots by descending score
     citySpots.sort((a,b)=>b.score-a.score);
+    // Distribute candidate spots across the map to avoid clustering in the centre.
+    // We build a grid over the map and pick the best spot from each cell. Then
+    // prepend these distributed spots to the master list so that at least one
+    // settlement spawns in each region. This helps ensure that when the map
+    // resolution or mountain intensity changes, cities are not all drawn toward
+    // the centre.
+    (function distributeCitySpots(){
+      const spotsNeeded = totalCities;
+      // Compute grid dimensions proportional to sqrt of desired city count. A higher
+      // multiplier yields more cells (and thus more distributed spots). The 0.8
+      // multiplier was chosen empirically to balance spread and density.
+      // Adjust grid dimensions by citySpacing factor: larger citySpacing yields fewer cells (larger spacing).
+      const spacingFactor = opts.citySpacing !== undefined ? opts.citySpacing : 1.0;
+      const baseGridX = Math.sqrt(spotsNeeded) * 0.8;
+      const gridX = Math.max(3, Math.floor(baseGridX / spacingFactor));
+      const gridY = Math.max(2, Math.floor(gridX * (h / w)));
+      const cellW = w / gridX;
+      const cellH = h / gridY;
+      const bestInCell = new Array(gridX * gridY).fill(null);
+      for(const spot of citySpots){
+        const ix = Math.min(gridX - 1, Math.floor(spot.x / cellW));
+        const iy = Math.min(gridY - 1, Math.floor(spot.y / cellH));
+        const index = iy * gridX + ix;
+        const existing = bestInCell[index];
+        if(!existing || spot.score > existing.score){
+          bestInCell[index] = spot;
+        }
+      }
+      const distributed = bestInCell.filter(Boolean);
+      if(distributed.length){
+        // Sort distributed spots so that higher quality spots spawn earlier
+        distributed.sort((a,b)=>b.score-a.score);
+        // Remove duplicates from citySpots to avoid placing the same spot twice
+        const distributedSet = new Set(distributed);
+        const remainder = citySpots.filter(s => !distributedSet.has(s));
+        // Replace citySpots with distributed followed by remainder. This ensures that
+        // the first `gridX*gridY` placements come from across the map.
+        citySpots.length = 0;
+        Array.prototype.push.apply(citySpots, distributed.concat(remainder));
+      }
+    })();
+
     const taken = new Uint8Array(w*h);
     const cities = [];
     const types = ['village','town','city','capital','port'];
@@ -642,12 +850,91 @@
       const t = nearSea && rnd()<0.3 ? 'port' : chooseType(rnd);
       const pop = Math.floor( (t==='village'?200+(rnd()*800): t==='town'? 1200+(rnd()*3000): t==='city'? 8000+(rnd()*12000): t==='capital'? 20000+(rnd()*40000) : 1500+(rnd()*3000)) );
       const prosp = ['poor','modest','prosperous','rich'][Math.floor(rnd()*4)];
+      // Temporarily assign random faction; will reassign later to group cities by faction
       const faction = Math.floor(rnd()*factions.length);
       const name = makePlaceName(rnd, t);
       cities.push({id:placed, name, type:t, x:c.x, y:c.y, pop, faction, prosperity:prosp});
       markTaken(taken,w,h,c.x,c.y, 14);
       placed++;
     }
+
+    // Cluster cities by faction: assign each faction a cluster centre and assign cities to nearest centre.
+    if(factions.length && cities.length){
+      // Choose cluster centres from the largest cities by population
+      const sortedByPop = cities.slice().sort((a,b)=>b.pop-a.pop);
+      const centres = [];
+      for(let i=0;i<factions.length;i++){
+        const c0 = sortedByPop[i % sortedByPop.length];
+        centres.push({x: c0.x, y: c0.y});
+      }
+      for(const c of cities){
+        let bestIdx = 0;
+        let bestDist = Infinity;
+        for(let i=0;i<centres.length;i++){
+          const cc = centres[i];
+          const d = Math.hypot(c.x - cc.x, c.y - cc.y);
+          if(d < bestDist){ bestDist = d; bestIdx = i; }
+        }
+        c.faction = bestIdx;
+      }
+    }
+
+    // Assign multi-tile shapes for cities based on size. Cities occupy multiple connected pixels.
+    // Each city type has a predefined number of tiles. Generate connected shapes via random growth.
+    const typeSize = { village:1, town:4, city:8, capital:12, port:6 };
+    // Map of occupied tiles to prevent overlap: key = y*w + x => cityId
+    const cityTileMap = new Int32Array(w * h);
+    cityTileMap.fill(-1);
+    function getNeighbours(x,y){
+      return [ [x-1,y], [x+1,y], [x,y-1], [x,y+1] ];
+    }
+    for(const city of cities){
+      // Determine tile count for this city type, applying size variation from options
+      let baseCount = typeSize[city.type] || 1;
+      if(opts.citySizeVar){
+        const varFactor = 1 + (rnd() * 2 - 1) * opts.citySizeVar;
+        baseCount = Math.max(1, Math.round(baseCount * varFactor));
+      }
+      const count = baseCount;
+      const tiles = [];
+      const set = new Set();
+      // Start with the centre tile
+      let key = city.y * w + city.x;
+      tiles.push({x: city.x, y: city.y});
+      set.add(key);
+      cityTileMap[key] = city.id;
+      // Grow by selecting random neighbours until reaching count
+      let attempts = 0;
+      while(tiles.length < count && attempts < 100){
+        attempts++;
+        // Pick a random tile from current shape
+        const base = tiles[Math.floor(rnd() * tiles.length)];
+        const neighbours = getNeighbours(base.x, base.y);
+        // Shuffle neighbours
+        for(let i=neighbours.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [neighbours[i], neighbours[j]]=[neighbours[j], neighbours[i]]; }
+        let placed = false;
+        for(const [nx, ny] of neighbours){
+          if(nx<0 || ny<0 || nx>=w || ny>=h) continue;
+          const idx = ny * w + nx;
+          if(!landMask[idx]) continue; // must be land
+          if(cityTileMap[idx] !== -1) continue; // avoid overlap
+          // Accept slight slopes only
+          if(slope[idx] > 0.15) continue;
+          // Add tile
+          tiles.push({x:nx, y:ny});
+          set.add(idx);
+          cityTileMap[idx] = city.id;
+          placed = true;
+          break;
+        }
+        if(!placed) continue;
+      }
+      city.tiles = tiles;
+    }
+    // Expose tile map in CURRENT later
+    // After assigning shapes, store the tile map on the global CURRENT state. This
+    // allows us to look up which city occupies each world cell when hit testing.
+    CURRENT.cityTileMap = cityTileMap;
 
     // POIs
     const poiTypes = ['ruins','tower','shrine','crypt'];
@@ -667,7 +954,9 @@
     const nodes = hubs.slice(0,maxHubs);
     const edges = computeMST(nodes, (a,b)=>Math.hypot(a.x-b.x,a.y-b.y));
     // Add a handful of extra local connections
-    const extra = Math.floor(nodes.length*0.35);
+    // Extra road connections: proportional to road density setting (default ~0.35)
+    const rd = opts.roadDensity !== undefined ? opts.roadDensity : 0.35;
+    const extra = Math.floor(nodes.length * rd);
     for(let k=0;k<extra;k++){
       const a = nodes[Math.floor(rnd()*nodes.length)];
       // nearest neighbor not already connected
@@ -679,12 +968,77 @@
     // Build organic road polylines with jitter & bezier smoothing
     const roads = [];
     const riverMaskSet = riverMask;
+    // Prepare a noise generator for road wobble
+    const roadNoise = makeValueNoise2D(seed + '|roads');
+    // Major roads: MST + extra connections
     for(const [a,b] of edges){
-      const poly = jitteredPath(a.x,a.y,b.x,b.y, rnd, landMask, w,h);
-      const curve = smoothPath(poly);
-      // Detect river crossings for bridges
+      // Avoid duplicate connections between the same pair of nodes
+      let exists = false;
+      for(const r of roads){
+        if((r.a===a && r.b===b) || (r.a===b && r.b===a)){
+          exists = true;
+          break;
+        }
+      }
+      if(exists) continue;
+      // Terrain-aware path using A*
+      let basePath = astarPath(a.x, a.y, b.x, b.y, height, slope, waterLevel);
+      // Simplify and apply natural noise wobble
+      const simplified = simplifyPath(basePath, 1.2);
+      const roadCurv = opts.roadCurvature !== undefined ? opts.roadCurvature : 1.0;
+      const wobbled = applyRoadNoise(simplified, roadNoise, 4 * roadCurv);
+      // Smooth the path
+      const curve = smoothPath(wobbled);
       const bridges = computeBridges(curve, riverMaskSet, w,h);
-      roads.push({a,b, path:curve, bridges});
+      roads.push({a,b, path:curve, bridges, level:'major'});
+    }
+    // Minor roads: connect towns and ports to the nearest city or capital (primary hubs)
+    const hubsByType = cities.filter(c => c.type==='city' || c.type==='capital');
+    for(const c of cities){
+      if(c.type==='town' || c.type==='port'){
+        // find nearest hub
+        let best=null,bestDist=1e9;
+        for(const h of hubsByType){ if(h===c) continue; const d=Math.hypot(c.x-h.x,c.y-h.y); if(d<bestDist){ bestDist=d; best=h; } }
+        if(best){
+          // Skip if connection already exists between these endpoints
+          let exists = false;
+          for(const r of roads){
+            if((r.a===c && r.b===best) || (r.a===best && r.b===c)){ exists = true; break; }
+          }
+          if(!exists){
+            // Use simple jittered path for minor roads to save computation
+            const poly = jitteredPath(c.x, c.y, best.x, best.y, rnd, landMask, w, h);
+            const curve = smoothPath(poly);
+            const bridges = computeBridges(curve, riverMaskSet, w,h);
+            roads.push({a:c,b:best, path:curve, bridges, level:'minor'});
+          }
+        }
+      }
+    }
+    // Trail roads: connect villages to nearest town or city (with probability to avoid clutter)
+    const hubsForTrails = cities.filter(c => c.type==='town' || c.type==='city' || c.type==='capital' || c.type==='port');
+    for(const c of cities){
+      if(c.type==='village'){
+        const rd = opts.roadDensity !== undefined ? opts.roadDensity : 0.35;
+        if(rnd() < rd){ // probability to connect a village based on road density
+          let best=null,bestDist=1e9;
+          for(const h of hubsForTrails){ const d=Math.hypot(c.x-h.x,c.y-h.y); if(d<bestDist){ bestDist=d; best=h; } }
+          if(best){
+            // Skip if connection already exists
+            let exists = false;
+            for(const r of roads){
+              if((r.a===c && r.b===best) || (r.a===best && r.b===c)){ exists = true; break; }
+            }
+            if(!exists){
+              // Use simple jittered path for trail roads
+              const poly = jitteredPath(c.x, c.y, best.x, best.y, rnd, landMask, w, h);
+              const curve = smoothPath(poly);
+              const bridges = computeBridges(curve, riverMaskSet, w,h);
+              roads.push({a:c,b:best, path:curve, bridges, level:'trail'});
+            }
+          }
+        }
+      }
     }
 
     // Prepare legend HTML
@@ -696,7 +1050,54 @@
     }
 
     // Store
-    CURRENT = { ...CURRENT, height, slope, landMask, coastSegments, rivers, riverMask, cities, pois, factions, roads, detail, chaos: chaos, waterLevel };
+    // Build a road occupancy mask: for each cell mark the highest road level present.
+    // Levels: 0 = none, 1 = trail, 2 = minor, 3 = major.
+    const roadMask = new Uint8Array(w * h);
+    // Bresenham line function to iterate cells along a line between two integer points.
+    function bresenhamLine(x0, y0, x1, y1, callback){
+      x0 = Math.round(x0); y0 = Math.round(y0);
+      x1 = Math.round(x1); y1 = Math.round(y1);
+      const dx = Math.abs(x1 - x0);
+      const dy = Math.abs(y1 - y0);
+      const sx = (x0 < x1 ? 1 : -1);
+      const sy = (y0 < y1 ? 1 : -1);
+      let err = dx - dy;
+      let x = x0, y = y0;
+      while(true){
+        callback(x, y);
+        if(x === x1 && y === y1) break;
+        const e2 = err * 2;
+        if(e2 > -dy){ err -= dy; x += sx; }
+        if(e2 < dx){ err += dx; y += sy; }
+      }
+    }
+    // For each road, sample path segments and mark cells. If major, mark neighbors to widen.
+    for(const r of roads){
+      const levelVal = r.level === 'major' ? 3 : r.level === 'minor' ? 2 : 1;
+      const path = r.path;
+      for(let i=1; i<path.length; i++){
+        const p0 = path[i-1];
+        const p1 = path[i];
+        bresenhamLine(p0.x, p0.y, p1.x, p1.y, (x,y) => {
+          if(x<0||y<0||x>=w||y>=h) return;
+          const idx = y*w + x;
+          if(levelVal > roadMask[idx]) roadMask[idx] = levelVal;
+          // Widen major roads by marking neighboring cells
+          if(levelVal >= 3){
+            for(let oy=-1; oy<=1; oy++){
+              for(let ox=-1; ox<=1; ox++){
+                const nx = x + ox;
+                const ny = y + oy;
+                if(nx<0||ny<0||nx>=w||ny>=h) continue;
+                const ni = ny*w + nx;
+                if(levelVal > roadMask[ni]) roadMask[ni] = levelVal;
+              }
+            }
+          }
+        });
+      }
+    }
+    CURRENT = { ...CURRENT, height, slope, landMask, coastSegments, rivers, riverMask, cities, pois, factions, roads, detail, chaos: chaos, waterLevel, temperature, moisture: moistureArr, roadMask, opts };
 
     // Render layers
     renderBase();
@@ -727,6 +1128,218 @@
       if(index){ if(index-first>1) simplifyDP(points, first, index, sqTol, out); out.push(points[index]); if(last-index>1) simplifyDP(points, index, last, sqTol, out); }
     }
     const out=[path[0]]; simplifyDP(path,0,path.length-1,sqTol,out); out.push(path[path.length-1]); return out;
+  }
+
+  // ------------------------
+  // MinHeap implementation for A* pathfinding. Stores objects with f-score and index.
+  class MinHeap {
+    constructor(){ this.heap = []; }
+    push(node){
+      this.heap.push(node);
+      this._siftUp(this.heap.length - 1);
+    }
+    pop(){
+      if(this.heap.length === 0) return null;
+      const top = this.heap[0];
+      const end = this.heap.pop();
+      if(this.heap.length > 0){
+        this.heap[0] = end;
+        this._siftDown(0);
+      }
+      return top;
+    }
+    _siftUp(i){
+      let parent;
+      while(i > 0){
+        parent = Math.floor((i - 1) / 2);
+        if(this.heap[i].f < this.heap[parent].f){
+          [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
+          i = parent;
+        } else break;
+      }
+    }
+    _siftDown(i){
+      const length = this.heap.length;
+      while(true){
+        let left = i * 2 + 1;
+        let right = left + 1;
+        let smallest = i;
+        if(left < length && this.heap[left].f < this.heap[smallest].f) smallest = left;
+        if(right < length && this.heap[right].f < this.heap[smallest].f) smallest = right;
+        if(smallest !== i){
+          [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
+          i = smallest;
+        } else break;
+      }
+    }
+  }
+
+  /**
+   * Compute a terrain-aware path between two points using A* on a local grid.
+   * Considers slope and water to determine movement cost. Returns an array of
+   * points {x, y} representing the path from start to end inclusive. If no path
+   * can be found, falls back to a straight line.
+   */
+  function astarPath(startX, startY, endX, endY, heightArr = CURRENT.height, slopeArr = CURRENT.slope, waterLvl = CURRENT.waterLevel){
+    const w = worldW, h = worldH;
+    // Round coordinates to nearest integer grid
+    const sx = Math.round(clamp(startX, 0, w - 1));
+    const sy = Math.round(clamp(startY, 0, h - 1));
+    const ex = Math.round(clamp(endX, 0, w - 1));
+    const ey = Math.round(clamp(endY, 0, h - 1));
+    // If start or end are out of bounds, return straight line
+    if(sx === ex && sy === ey){ return [{x: startX, y: startY}, {x: endX, y: endY}]; }
+    // Define a local bounding box around the path for performance
+    const margin = 40;
+    let minX = Math.max(0, Math.min(sx, ex) - margin);
+    let maxX = Math.min(w - 1, Math.max(sx, ex) + margin);
+    let minY = Math.max(0, Math.min(sy, ey) - margin);
+    let maxY = Math.min(h - 1, Math.max(sy, ey) + margin);
+    const bw = maxX - minX + 1;
+    const bh = maxY - minY + 1;
+    const size = bw * bh;
+    // Index in local grid to global x,y
+    function localIndex(x, y){ return (y - minY) * bw + (x - minX); }
+    function globalFromLocal(i){ const lx = i % bw + minX; const ly = Math.floor(i / bw) + minY; return {x: lx, y: ly}; }
+    const startIdx = localIndex(sx, sy);
+    const endIdx = localIndex(ex, ey);
+    // Allocate gScore, fScore and cameFrom arrays
+    const gScore = new Float32Array(size);
+    const fScore = new Float32Array(size);
+    const cameFrom = new Int32Array(size);
+    const inOpen = new Uint8Array(size);
+    const inClosed = new Uint8Array(size);
+    for(let i=0;i<size;i++){ gScore[i] = Infinity; fScore[i] = Infinity; cameFrom[i] = -1; }
+    gScore[startIdx] = 0;
+    // Heuristic: Euclidean distance
+    function heuristic(ix, iy){ return Math.hypot(ix - ex, iy - ey); }
+    fScore[startIdx] = heuristic(sx, sy);
+    const openHeap = new MinHeap();
+    openHeap.push({idx: startIdx, f: fScore[startIdx]});
+    inOpen[startIdx] = 1;
+    // Predeclare neighbor offsets (8 directions)
+    const dirs = [
+      [1, 0], [-1, 0], [0, 1], [0, -1],
+      [1, 1], [1, -1], [-1, 1], [-1, -1]
+    ];
+    while(true){
+      const node = openHeap.pop();
+      if(!node) break;
+      const currentIdx = node.idx;
+      if(inClosed[currentIdx]) continue;
+      inOpen[currentIdx] = 0;
+      // If reached goal, reconstruct path
+      if(currentIdx === endIdx){
+        const path = [];
+        let ci = currentIdx;
+        while(ci !== -1){ path.push(globalFromLocal(ci)); ci = cameFrom[ci]; }
+        path.reverse();
+        // Convert to {x,y} points
+        return path.map(p => ({x: p.x, y: p.y}));
+      }
+      inClosed[currentIdx] = 1;
+      const current = globalFromLocal(currentIdx);
+      const cx = current.x; const cy = current.y;
+      const currentG = gScore[currentIdx];
+      for(const [dx, dy] of dirs){
+        const nx = cx + dx;
+        const ny = cy + dy;
+        if(nx < minX || nx > maxX || ny < minY || ny > maxY) continue;
+        const nIdx = localIndex(nx, ny);
+        if(inClosed[nIdx]) continue;
+        // Movement cost: base 1 + slope penalty + water penalty
+        const globalIdx = ny * w + nx;
+        const cellSlope = slopeArr ? slopeArr[globalIdx] : 0;
+        const cellHeight = heightArr ? heightArr[globalIdx] : 0;
+        let cost = 1 + cellSlope * 40;
+        // If water cell, discourage crossing but allow with high cost
+        if(cellHeight < waterLvl){ cost += 50; }
+        // Diagonal moves cost more
+        if(dx !== 0 && dy !== 0) cost *= 1.4;
+        const tentativeG = currentG + cost;
+        if(tentativeG < gScore[nIdx]){
+          cameFrom[nIdx] = currentIdx;
+          gScore[nIdx] = tentativeG;
+          fScore[nIdx] = tentativeG + heuristic(nx, ny);
+          if(!inOpen[nIdx]){
+            openHeap.push({idx: nIdx, f: fScore[nIdx]});
+            inOpen[nIdx] = 1;
+          }
+        }
+      }
+    }
+    // Fallback: return a straight line if no path found
+    return [ {x: startX, y: startY}, {x: endX, y: endY} ];
+  }
+
+  /**
+   * Apply a gentle jitter to a path by offsetting intermediate points
+   * perpendicular to their direction. This yields a more natural curvature
+   * without appearing too sinusoidal. The amount of jitter decreases towards
+   * the ends of the path.
+   */
+  function jitterPath(points, rnd, amplitude = 3){
+    if(!points || points.length < 3) return points;
+    const out = [points[0]];
+    const n = points.length;
+    for(let i=1;i<n-1;i++){
+      const pPrev = points[i-1];
+      const pCurr = points[i];
+      const pNext = points[i+1];
+      // Direction vector from prev to next
+      const dx = pNext.x - pPrev.x;
+      const dy = pNext.y - pPrev.y;
+      const len = Math.hypot(dx, dy) || 1;
+      // Perpendicular unit vector
+      const ux = -dy / len;
+      const uy = dx / len;
+      // Weight jitter by distance from ends
+      const t = i / (n - 1);
+      const weight = Math.sin(Math.PI * t);
+      const j = (rnd() - 0.5) * amplitude * weight;
+      out.push({x: pCurr.x + ux * j, y: pCurr.y + uy * j});
+    }
+    out.push(points[n - 1]);
+    return out;
+  }
+
+  /**
+   * Apply a natural noise-based wobble to a polyline representing a road. Uses
+   * fractional Brownian motion (fbm) noise to determine perpendicular offsets
+   * based on the world coordinates of each point. The amplitude controls the
+   * maximum deviation. The wobble tapers near the ends of the path to avoid
+   * disturbing endpoints.
+   *
+   * @param {Array} points - Array of {x, y} points representing the polyline
+   * @param {Object} noise - A noise generator with an fbm(x,y) method
+   * @param {number} amplitude - Maximum perpendicular offset in world units
+   * @returns {Array} New array of {x, y} points with applied noise offsets
+   */
+  function applyRoadNoise(points, noise, amplitude = 3){
+    if(!noise || !points || points.length < 3) return points;
+    const out = [points[0]];
+    const n = points.length;
+    for(let i=1; i<n-1; i++){
+      const pPrev = points[i-1];
+      const pCurr = points[i];
+      const pNext = points[i+1];
+      // Direction vector from prev to next
+      const dx = pNext.x - pPrev.x;
+      const dy = pNext.y - pPrev.y;
+      const len = Math.hypot(dx, dy) || 1;
+      // Perpendicular unit vector
+      const ux = -dy / len;
+      const uy = dx / len;
+      // Weight the noise effect to taper at ends
+      const t = i / (n - 1);
+      const weight = Math.sin(Math.PI * t);
+      // Sample 2D noise: fbm returns approx 0..1, center around 0
+      const nVal = noise.fbm(pCurr.x * 0.02, pCurr.y * 0.02, 3, 2.0, 0.5) - 0.5;
+      const offset = nVal * amplitude * weight;
+      out.push({x: pCurr.x + ux * offset, y: pCurr.y + uy * offset});
+    }
+    out.push(points[n - 1]);
+    return out;
   }
   function smoothPath(points){
     // Catmull-Rom to polyline sampling
@@ -805,35 +1418,94 @@
 
   // ---------- Rendering
   function renderBase(){
-    const {height, landMask, coastSegments, waterLevel, rivers, riverMask} = CURRENT;
+    const {height, landMask, coastSegments, waterLevel, rivers, riverMask, roads, temperature, moisture} = CURRENT;
     const w=worldW, h=worldH; const ctx=baseCtx; ctx.clearRect(0,0,w,h);
 
-    // Step color fill
-    const img = ctx.createImageData(w,h); const data = img.data;
+    // Step color fill with biome-based colours. Compute colour per pixel based on
+    // elevation, temperature, and moisture. Water cells use the ocean palette; land
+    // cells are coloured by biome.
+    const img = ctx.createImageData(w,h);
+    const data = img.data;
+    // Define base colours for each biome. Colours will be lightened based on elevation.
+    const baseCols = {
+      desert: '#e0c48a',
+      savanna: '#c1a15e',
+      grassland: '#91aa57',
+      deciduous: '#6f8440',
+      rainforest: '#3a6c36',
+      taiga: '#6d816c',
+      tundra: '#9aa99f',
+      mountain: '#8a8a8a',
+      snow: '#e4e4e4'
+    };
     for(let i=0;i<height.length;i++){
-      const z=height[i]; let r=0,g=0,b=0;
-      // For heights below water level, use the ocean palette.
-      if(z<waterLevel){
-        const t = clamp((z/(waterLevel+1e-6))*OceanSteps.length,0,OceanSteps.length-1);
+      const z = height[i];
+      let r=0,g=0,b=0;
+      if(z < waterLevel){
+        // Ocean palette: use step colours from OceanSteps
+        const t = clamp((z / (waterLevel + 1e-6)) * OceanSteps.length, 0, OceanSteps.length - 1);
         const col = hexToRgb(OceanSteps[Math.floor(t)]);
-        r=col.r; g=col.g; b=col.b;
+        r = col.r; g = col.g; b = col.b;
       } else {
-        const zRel = (z-waterLevel)/(1-waterLevel+1e-6);
-        // Beach threshold remains fixed for the sandy shore.
-        if(zRel<0.08){
-          const col = hexToRgb(Beach);
-          r=col.r; g=col.g; b=col.b;
+        const rel = (z - waterLevel) / (1 - waterLevel + 1e-6);
+        const temp = temperature[i];
+        const moist = moisture[i];
+        let biome;
+        // Classify mountains and snow based on elevation relative
+        if(rel > 0.78){
+          biome = 'snow';
+        } else if(rel > 0.65){
+          biome = 'mountain';
         } else {
-          // Determine index into the MapColors array. All elevations above beach share this palette.
-          const tIndex = Math.floor((zRel-0.08)/0.92 * MapColors.length);
-          const idx = clamp(tIndex, 0, MapColors.length-1);
-          const col = hexToRgb(MapColors[idx]);
-          r=col.r; g=col.g; b=col.b;
+          // Determine biome based on climate zones
+          if(temp < 0.3){
+            biome = moist > 0.5 ? 'taiga' : 'tundra';
+          } else if(temp < 0.6){
+            if(moist > 0.7) biome = 'rainforest';
+            else if(moist > 0.4) biome = 'deciduous';
+            else biome = 'grassland';
+          } else {
+            if(moist > 0.7) biome = 'rainforest';
+            else if(moist > 0.4) biome = 'savanna';
+            else biome = 'desert';
+          }
+        }
+        let baseColHex = baseCols[biome] || '#88aa55';
+        // Lighten the base colour based on elevation to give depth variation
+        const lightFactor = rel * 0.4;
+        const adjustedHex = lightenColor(baseColHex, lightFactor);
+        const col = hexToRgb(adjustedHex);
+        r = col.r; g = col.g; b = col.b;
+      }
+      // Apply road overlay: if this pixel is part of a road, replace with the road colour by level. 100% opaque.
+      if(CURRENT.roadMask){
+        const level = CURRENT.roadMask[i];
+        if(level > 0){
+          // Determine colour for each road level: major, minor, trail.
+          if(!renderBase.cachedRoadCols){
+            // Cache road colours in rgb to avoid repeated conversion
+            renderBase.cachedRoadCols = {};
+          }
+          let colArr = renderBase.cachedRoadCols;
+          // Use base RoadColor for major roads
+          if(!colArr.major){ colArr.major = hexToRgb(RoadColor); }
+          if(!colArr.minor){ colArr.minor = hexToRgb(lightenColor(RoadColor, 0.25)); }
+          if(!colArr.trail){ colArr.trail = hexToRgb(lightenColor(RoadColor, 0.45)); }
+          let rc;
+          if(level === 3) rc = colArr.major;
+          else if(level === 2) rc = colArr.minor;
+          else rc = colArr.trail;
+          r = rc.r;
+          g = rc.g;
+          b = rc.b;
         }
       }
-      data[i*4+0]=r; data[i*4+1]=g; data[i*4+2]=b; data[i*4+3]=255;
+      data[i*4+0] = r;
+      data[i*4+1] = g;
+      data[i*4+2] = b;
+      data[i*4+3] = 255;
     }
-    ctx.putImageData(img,0,0);
+    ctx.putImageData(img, 0, 0);
 
     // Rivers on top (variable width)
     ctx.save();
@@ -842,7 +1514,10 @@
     for(const river of rivers){
       ctx.beginPath();
       for(let i=0;i<river.length;i++){
-        const p=river[i]; const t=i/river.length; const wv= 1 + t*2.2; // widen downstream
+        const p=river[i]; const t=i/river.length;
+        // Adjust river width by user-defined factor (default 1.0)
+        const widthFactor = CURRENT.opts && CURRENT.opts.riverWidth ? CURRENT.opts.riverWidth : 1.0;
+        const wv = widthFactor * (1 + t*2.2); // widen downstream
         if(i===0){ ctx.moveTo(p.x,p.y); ctx.lineWidth=wv; }
         else { ctx.lineTo(p.x,p.y); ctx.lineWidth=wv; }
       }
@@ -850,17 +1525,46 @@
     }
     ctx.restore();
 
-    // Coast outline: thin dark line between land and water
+    // Coast outline: thin dark line between land and water. Offset by 0.5 to
+    // align with pixel boundaries and avoid antialiasing.
     ctx.save();
     ctx.strokeStyle = '#0a0c10';
-    ctx.lineWidth = 1.25;
+    ctx.lineWidth = 1;
     ctx.globalAlpha = 0.9;
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
     for(const seg of coastSegments){
-      ctx.beginPath(); ctx.moveTo(seg[0].x, seg[0].y);
-      for(let i=1;i<seg.length;i++){ ctx.lineTo(seg[i].x, seg[i].y); }
+      ctx.beginPath();
+      ctx.moveTo(seg[0].x + 0.5, seg[0].y + 0.5);
+      for(let i=1;i<seg.length;i++){
+        ctx.lineTo(seg[i].x + 0.5, seg[i].y + 0.5);
+      }
       ctx.stroke();
     }
     ctx.restore();
+
+    // Draw multi-tile city footprints directly on the terrain. Each tile occupied by
+    // a city is coloured using a lightened version of its faction colour. This
+    // provides visual differentiation without adding separate banners. We also
+    // draw a subtle inner outline to delineate adjacent city tiles.
+    if(CURRENT.cities && CURRENT.cities.length){
+      ctx.save();
+      for(const c of CURRENT.cities){
+        const baseColour = CURRENT.factions[c.faction]?.color || '#aaaaaa';
+        const fillCol = lightenColor(baseColour, 0.25);
+        const strokeCol = darkenColor(baseColour, 0.3);
+        ctx.fillStyle = fillCol;
+        ctx.strokeStyle = strokeCol;
+        // Draw each tile. Fill the tile only; inner outlines are removed to avoid antialiasing.
+        for(const t of c.tiles){
+          ctx.fillRect(t.x, t.y, 1, 1);
+        }
+      }
+      ctx.restore();
+    }
+
+    // We no longer draw roads here as vector shapes; instead roads are baked into the
+    // terrain via the roadMask above.
   }
 
   // Render overlay features (roads, POIs, and city labels) to a given context.
@@ -878,42 +1582,7 @@
     // Compute scale factors: using 1/zoom keeps elements constant size on screen.
     const scaleFactor = 1 / zoom;
     const clampedScale = clamp(scaleFactor, 0.4, 3.0);
-    // Draw roads
-    ctx.save();
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    for(const r of roads){
-      // Draw edge/shadow
-      ctx.strokeStyle = RoadEdge;
-      ctx.lineWidth = 4.6 * clampedScale;
-      ctx.globalAlpha = 0.45;
-      ctx.beginPath();
-      for(let i=0;i<r.path.length;i++){
-        const p = r.path[i];
-        if(i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-      }
-      ctx.stroke();
-      // Draw road body
-      ctx.strokeStyle = RoadColor;
-      ctx.lineWidth = 3.2 * clampedScale;
-      ctx.globalAlpha = 0.95;
-      ctx.beginPath();
-      for(let i=0;i<r.path.length;i++){
-        const p = r.path[i];
-        if(i===0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-      }
-      ctx.stroke();
-      // Draw bridges
-      ctx.globalAlpha = 1.0;
-      ctx.fillStyle = BridgeColor;
-      ctx.strokeStyle = '#0007';
-      for(const b of r.bridges){
-        const size = 6 * clampedScale;
-        roundRect(ctx, b.x - size, b.y - 2 * clampedScale, size * 2, 4 * clampedScale, 2 * clampedScale);
-        ctx.fill();
-        ctx.stroke();
-      }
-    }
-    ctx.restore();
+    // Roads are now painted directly onto the terrain in renderBase. Skip drawing them here.
     // Draw points of interest
     for(const p of pois){
       drawPOI(ctx, p, scaleFactor, clampedScale);
@@ -929,21 +1598,6 @@
       const fontSize = baseFont * clampedScale * (isHover ? 1.2 : 1.0);
       ctx.font = `bold ${fontSize}px/1.2 'Palatino Linotype', 'Book Antiqua', Palatino, 'Georgia', serif`;
       const label = c.name;
-      const metrics = ctx.measureText(label);
-      const padX = 6 * clampedScale;
-      const padY = 3 * clampedScale;
-      const bw = metrics.width + padX * 2;
-      const bh = fontSize + padY * 2;
-      // Banner colour based on faction
-      const bannerColour = factions[c.faction]?.color || '#888';
-      ctx.save();
-      ctx.globalAlpha = isHover ? 0.95 : 0.85;
-      ctx.fillStyle = hexWithAlpha(bannerColour, 0.18);
-      ctx.strokeStyle = hexWithAlpha(bannerColour, 0.6);
-      roundRect(ctx, c.x - bw/2, c.y - (20 * clampedScale) - padY, bw, bh, 6 * clampedScale);
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
       // Draw city dot
       const baseRadius = c.type==='village' ? 2.2 : 3.0;
       const radius = baseRadius * clampedScale * (isHover ? 1.4 : 1.0);
@@ -952,11 +1606,55 @@
       ctx.beginPath(); ctx.arc(c.x, c.y - 4 * clampedScale, radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       // Label colour depending on city type and hover state
       let textCol;
-      if(c.type === 'village') textCol = '#bfc8d6';
+      if(c.type === 'village') textCol = isHover ? '#d4dce6' : '#bfc8d6';
       else if(c.type === 'city' || c.type === 'capital') textCol = isHover ? '#ff8585' : '#ff5252';
       else textCol = isHover ? '#f0d8a0' : '#e8e0c0';
+      // Outline colour: dark unsaturated brown
+      const outlineColor = '#3b2d1f';
+      const lineW = 0.8 * clampedScale * (isHover ? 1.2 : 1.0);
+      ctx.strokeStyle = outlineColor;
+      ctx.lineWidth = lineW;
+      ctx.strokeText(label, c.x, c.y - (20 * clampedScale));
       ctx.fillStyle = textCol;
       ctx.fillText(label, c.x, c.y - (20 * clampedScale));
+
+      // If hovering over this city, draw a crisp black outline around its shape.
+      if(isHover && c.tiles){
+        ctx.save();
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.lineCap = 'butt';
+        ctx.lineJoin = 'miter';
+        ctx.beginPath();
+        // For each tile, draw border segments where neighbouring tile is not part of the city
+        const tileSet = new Set(c.tiles.map(t => t.y * worldW + t.x));
+        for(const t of c.tiles){
+          const x = t.x;
+          const y = t.y;
+          // Left edge
+          if(!tileSet.has(y * worldW + (x - 1))){
+            ctx.moveTo(x + 0.0, y + 0.0);
+            ctx.lineTo(x + 0.0, y + 1.0);
+          }
+          // Right edge
+          if(!tileSet.has(y * worldW + (x + 1))){
+            ctx.moveTo(x + 1.0, y + 0.0);
+            ctx.lineTo(x + 1.0, y + 1.0);
+          }
+          // Top edge
+          if(!tileSet.has((y - 1) * worldW + x)){
+            ctx.moveTo(x + 0.0, y + 0.0);
+            ctx.lineTo(x + 1.0, y + 0.0);
+          }
+          // Bottom edge
+          if(!tileSet.has((y + 1) * worldW + x)){
+            ctx.moveTo(x + 0.0, y + 1.0);
+            ctx.lineTo(x + 1.0, y + 1.0);
+          }
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
     }
     ctx.restore();
   }
@@ -968,8 +1666,8 @@
     ctx.clearRect(0, 0, W, H);
     // Apply world-to-screen transform
     ctx.setTransform(SCALE, 0, 0, SCALE, panX, panY);
-    // Draw terrain (base) with smoothing enabled for smooth gradients
-    ctx.imageSmoothingEnabled = true;
+    // Draw terrain (base) without antialiasing for crisp pixel edges
+    ctx.imageSmoothingEnabled = false;
     ctx.drawImage(baseOff, 0, 0);
     // Draw overlay (roads, POIs, cities) directly onto the main canvas at current zoom
     // Vector drawings are inherently crisp; no need to toggle imageSmoothingEnabled here.
@@ -1025,11 +1723,17 @@
         ctx.stroke();
         break;
     }
-    // Draw POI label
+    // Draw POI label with dark outline
     const fontSize = 10 * clampedScale * (isHover ? 1.2 : 1.0);
     ctx.font = `${fontSize}px 'Palatino Linotype', 'Book Antiqua', Palatino, 'Georgia', serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
+    // Outline colour and line width
+    const outlineColor = '#3b2d1f';
+    const lineW = 0.7 * clampedScale * (isHover ? 1.2 : 1.0);
+    ctx.strokeStyle = outlineColor;
+    ctx.lineWidth = lineW;
+    ctx.strokeText(name, x, y - sizeUnit * 3);
     ctx.fillStyle = isHover ? '#ffe0b0' : '#9aa4b2';
     ctx.fillText(name, x, y - sizeUnit * 3);
     ctx.restore();
@@ -1049,6 +1753,68 @@
       const p=pois[i]; const dx=wx-p.x, dy=wy-p.y; if(dx*dx+dy*dy< 8*8){
         return {kind:'poi', data:p, tooltip: `${escapeHtml(p.name)} (${p.type})`};
       }
+    }
+    // If no city or POI was hit, return detailed pixel information if within bounds
+    const xi = Math.floor(wx);
+    const yi = Math.floor(wy);
+    const w = worldW, h = worldH;
+    if(xi >= 0 && yi >= 0 && xi < w && yi < h){
+      const idx = yi * w + xi;
+      const {height, waterLevel, temperature, moisture, slope, roadMask, cityTileMap, cities, factions} = CURRENT;
+      const z = height[idx];
+      // Compute relative elevation (0-1 above water)
+      const rel = z < waterLevel ? 0 : (z - waterLevel) / (1 - waterLevel + 1e-6);
+      const temp = temperature[idx];
+      const moist = moisture[idx];
+      const slp = slope[idx];
+      // Determine biome type using the same thresholds as renderBase
+      let biome;
+      if(z < waterLevel){
+        biome = 'ocean';
+      } else if(rel > 0.78){
+        biome = 'snow';
+      } else if(rel > 0.65){
+        biome = 'mountain';
+      } else {
+        if(temp < 0.3){
+          biome = moist > 0.5 ? 'taiga' : 'tundra';
+        } else if(temp < 0.6){
+          if(moist > 0.7) biome = 'rainforest';
+          else if(moist > 0.4) biome = 'deciduous';
+          else biome = 'grassland';
+        } else {
+          if(moist > 0.7) biome = 'rainforest';
+          else if(moist > 0.4) biome = 'savanna';
+          else biome = 'desert';
+        }
+      }
+      // Check if this pixel belongs to a city
+      let occupant = null;
+      if(cityTileMap && cityTileMap[idx] !== undefined && cityTileMap[idx] >= 0){
+        const cid = cityTileMap[idx];
+        const city = cities[cid];
+        if(city){ occupant = city.name; }
+      }
+      // Check if this pixel is a road
+      let roadInfo = null;
+      if(roadMask && roadMask[idx] > 0){
+        roadInfo = roadMask[idx] === 3 ? 'major road' : roadMask[idx] === 2 ? 'minor road' : 'trail';
+      }
+      // Convert relative elevation to metres: assume max elevation is ~3000m and water level 0
+      const elevation = Math.round(rel * 3000);
+      // Convert temperature (0..1) to degrees Celsius: approximate -20°C to 40°C
+      const tempC = Math.round((temp * 60) - 20);
+      const humPct = Math.round(moist * 100);
+      const slopePct = Math.round(slp * 100);
+      let tip = `<b>Tile (${xi},${yi})</b><br>`;
+      if(occupant) tip += `<strong>City:</strong> ${escapeHtml(occupant)}<br>`;
+      if(roadInfo) tip += `<strong>Road:</strong> ${roadInfo}<br>`;
+      tip += `<strong>Biome:</strong> ${biome}<br>`;
+      tip += `<strong>Elevation:</strong> ${elevation}m<br>`;
+      tip += `<strong>Temp:</strong> ${tempC}°C<br>`;
+      tip += `<strong>Moisture:</strong> ${humPct}%<br>`;
+      tip += `<strong>Slope:</strong> ${slopePct}%`;
+      return {kind:'tile', data:{x:xi,y:yi}, tooltip: tip};
     }
     return null;
   }
@@ -1212,7 +1978,35 @@
       capital: 'The grand capital, seat of power and culture across the realm.',
       port: 'A rugged harbor with docks, warehouses and salty air.'
     }[c.type];
-    return `${flavor} Aligned to the ${f}. Prosperity is ${c.prosperity}.`;
+    // Determine climate and biome at the city location
+    const idx = c.y * worldW + c.x;
+    const z = CURRENT.height[idx];
+    const waterLevel = CURRENT.waterLevel;
+    const rel = (z - waterLevel) / (1 - waterLevel + 1e-6);
+    const temp = CURRENT.temperature ? CURRENT.temperature[idx] : 0.5;
+    const moist = CURRENT.moisture ? CURRENT.moisture[idx] : 0.5;
+    function classifyClimate(t){
+      if(t < 0.3) return 'frio';
+      if(t < 0.6) return 'temperado';
+      return 'quente';
+    }
+    function classifyBiome(rel, t, m){
+      if(rel > 0.78) return 'gélido';
+      if(rel > 0.65) return 'montanhoso';
+      if(t < 0.3){ return m > 0.5 ? 'taiga' : 'tundra'; }
+      if(t < 0.6){
+        if(m > 0.7) return 'floresta densa';
+        if(m > 0.4) return 'floresta temperada';
+        return 'pradaria';
+      }
+      // hot
+      if(m > 0.7) return 'floresta tropical';
+      if(m > 0.4) return 'savana';
+      return 'deserto';
+    }
+    const climate = classifyClimate(temp);
+    const biome = classifyBiome(rel, temp, moist);
+    return `${flavor} Alinhada à ${f}. Prosperidade: ${c.prosperity}. Clima: ${climate}. Bioma: ${biome}.`;
   }
 
   function isNearAnyCity(cities,x,y,dist){
@@ -1230,6 +2024,8 @@
     // Additional user-configurable settings
     const mountains = parseInt(document.getElementById('mountains').value || 30, 10);
     const factions = parseInt(document.getElementById('factions').value || 0, 10);
+    // Terrain resolution factor (float). Controls world pixel density.
+    const terrainRes = parseFloat(document.getElementById('terrainRes')?.value || '1.0');
     const colors = {
       ocean: document.getElementById('colorOcean').value,
       land: document.getElementById('colorLand').value,
@@ -1238,7 +2034,42 @@
       river: document.getElementById('colorRiver').value,
       road: document.getElementById('colorRoad').value
     };
-    generate({seed, cities, rivers, waterPct: water, chaos, detail, mountains, factions, colors});
+    // Read additional tweak parameters
+    const slopeLimit = parseFloat(document.getElementById('slopeLimit')?.value || '15');
+    const moistureScale = parseFloat(document.getElementById('moistureScale')?.value || '1.0');
+    const tempScale = parseFloat(document.getElementById('tempScale')?.value || '1.0');
+    const biomeDiv = parseFloat(document.getElementById('biomeDiv')?.value || '1.0');
+    const citySizeVar = parseFloat(document.getElementById('citySizeVar')?.value || '0.0');
+    const cityCluster = parseFloat(document.getElementById('cityCluster')?.value || '1.0');
+    const roadDensity = parseFloat(document.getElementById('roadDensity')?.value || '0.35');
+    const riverWidth = parseFloat(document.getElementById('riverWidth')?.value || '1.0');
+    // Read new tweak parameters
+    const peakFreq = parseFloat(document.getElementById('peakFreq')?.value || '1.0');
+    const citySpacing = parseFloat(document.getElementById('citySpacing')?.value || '1.0');
+    const roadCurvature = parseFloat(document.getElementById('roadCurvature')?.value || '1.0');
+    generate({
+      seed,
+      cities,
+      rivers,
+      waterPct: water,
+      chaos,
+      detail,
+      mountains,
+      factions,
+      colors,
+      terrainRes,
+      slopeLimit,
+      moistureScale,
+      tempScale,
+      biomeDiv,
+      citySizeVar,
+      cityCluster,
+      roadDensity,
+      riverWidth
+      ,peakFreq
+      ,citySpacing
+      ,roadCurvature
+    });
   });
   document.getElementById('export').addEventListener('click', ()=>{
     exportPNG();
@@ -1266,6 +2097,14 @@
   if(mountainsSlider){
     mountainsSlider.addEventListener('input', ()=>{ updateSliderDisplay('mountainsVal', mountainsSlider.value); });
     updateSliderDisplay('mountainsVal', mountainsSlider.value);
+  }
+
+  const terrainResSlider = document.getElementById('terrainRes');
+  if(terrainResSlider){
+    terrainResSlider.addEventListener('input', ()=>{
+      updateSliderDisplay('terrainResVal', parseFloat(terrainResSlider.value).toFixed(1));
+    });
+    updateSliderDisplay('terrainResVal', parseFloat(terrainResSlider.value).toFixed(1));
   }
 
   // ---------- Custom colour palette management ----------
@@ -1322,6 +2161,28 @@
     renderColorList();
     updatePalette();
 
+    // Tabbed settings interface: activate corresponding content panel when a tab is clicked
+    const tabButtons = document.querySelectorAll('.tabBtn');
+    const tabContents = document.querySelectorAll('.tabContent');
+    function activateTab(tabId){
+      tabButtons.forEach(btn => {
+        if(btn.dataset.tab === tabId) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      tabContents.forEach(panel => {
+        if(panel.id === tabId) panel.classList.add('active');
+        else panel.classList.remove('active');
+      });
+    }
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        activateTab(target);
+      });
+    });
+    // Activate default tab on load
+    activateTab('tabGeneral');
+
     // Real-time updates for base colour pickers (ocean, land, hills, mountains, rivers, roads)
     // Throttled colour update function
     let colourUpdateTimeout;
@@ -1348,6 +2209,65 @@
     function updateColours(){
       clearTimeout(colourUpdateTimeout);
       colourUpdateTimeout = setTimeout(updateColoursImmediate, 200);
+    }
+
+    // Attach listeners for the new sliders to update their numeric displays
+    const slopeLimitSlider = document.getElementById('slopeLimit');
+    if(slopeLimitSlider){
+      slopeLimitSlider.addEventListener('input', ()=>{ updateSliderDisplay('slopeLimitVal', slopeLimitSlider.value); });
+      updateSliderDisplay('slopeLimitVal', slopeLimitSlider.value);
+    }
+    const moistureScaleSlider = document.getElementById('moistureScale');
+    if(moistureScaleSlider){
+      moistureScaleSlider.addEventListener('input', ()=>{ updateSliderDisplay('moistureScaleVal', parseFloat(moistureScaleSlider.value).toFixed(1)); });
+      updateSliderDisplay('moistureScaleVal', parseFloat(moistureScaleSlider.value).toFixed(1));
+    }
+    const tempScaleSlider = document.getElementById('tempScale');
+    if(tempScaleSlider){
+      tempScaleSlider.addEventListener('input', ()=>{ updateSliderDisplay('tempScaleVal', parseFloat(tempScaleSlider.value).toFixed(1)); });
+      updateSliderDisplay('tempScaleVal', parseFloat(tempScaleSlider.value).toFixed(1));
+    }
+    const biomeDivSlider = document.getElementById('biomeDiv');
+    if(biomeDivSlider){
+      biomeDivSlider.addEventListener('input', ()=>{ updateSliderDisplay('biomeDivVal', parseFloat(biomeDivSlider.value).toFixed(1)); });
+      updateSliderDisplay('biomeDivVal', parseFloat(biomeDivSlider.value).toFixed(1));
+    }
+    const citySizeVarSlider = document.getElementById('citySizeVar');
+    if(citySizeVarSlider){
+      citySizeVarSlider.addEventListener('input', ()=>{ updateSliderDisplay('citySizeVarVal', parseFloat(citySizeVarSlider.value).toFixed(1)); });
+      updateSliderDisplay('citySizeVarVal', parseFloat(citySizeVarSlider.value).toFixed(1));
+    }
+    const cityClusterSlider = document.getElementById('cityCluster');
+    if(cityClusterSlider){
+      cityClusterSlider.addEventListener('input', ()=>{ updateSliderDisplay('cityClusterVal', parseFloat(cityClusterSlider.value).toFixed(1)); });
+      updateSliderDisplay('cityClusterVal', parseFloat(cityClusterSlider.value).toFixed(1));
+    }
+    const roadDensitySlider = document.getElementById('roadDensity');
+    if(roadDensitySlider){
+      roadDensitySlider.addEventListener('input', ()=>{ updateSliderDisplay('roadDensityVal', parseFloat(roadDensitySlider.value).toFixed(2)); });
+      updateSliderDisplay('roadDensityVal', parseFloat(roadDensitySlider.value).toFixed(2));
+    }
+    const riverWidthSlider = document.getElementById('riverWidth');
+    if(riverWidthSlider){
+      riverWidthSlider.addEventListener('input', ()=>{ updateSliderDisplay('riverWidthVal', parseFloat(riverWidthSlider.value).toFixed(1)); });
+      updateSliderDisplay('riverWidthVal', parseFloat(riverWidthSlider.value).toFixed(1));
+    }
+
+    // New sliders for additional tweak parameters
+    const peakFreqSlider = document.getElementById('peakFreq');
+    if(peakFreqSlider){
+      peakFreqSlider.addEventListener('input', ()=>{ updateSliderDisplay('peakFreqVal', parseFloat(peakFreqSlider.value).toFixed(1)); });
+      updateSliderDisplay('peakFreqVal', parseFloat(peakFreqSlider.value).toFixed(1));
+    }
+    const citySpacingSlider = document.getElementById('citySpacing');
+    if(citySpacingSlider){
+      citySpacingSlider.addEventListener('input', ()=>{ updateSliderDisplay('citySpacingVal', parseFloat(citySpacingSlider.value).toFixed(1)); });
+      updateSliderDisplay('citySpacingVal', parseFloat(citySpacingSlider.value).toFixed(1));
+    }
+    const roadCurvatureSlider = document.getElementById('roadCurvature');
+    if(roadCurvatureSlider){
+      roadCurvatureSlider.addEventListener('input', ()=>{ updateSliderDisplay('roadCurvatureVal', parseFloat(roadCurvatureSlider.value).toFixed(1)); });
+      updateSliderDisplay('roadCurvatureVal', parseFloat(roadCurvatureSlider.value).toFixed(1));
     }
     const ids = ['colorOcean','colorLand','colorHills','colorMountains','colorRiver','colorRoad'];
     ids.forEach(id => {
